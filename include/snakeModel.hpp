@@ -1,7 +1,10 @@
+#ifndef SNAKEMODEL
+#define SNAKEMODEL
+
 #include <vector>
 
 enum Command{
-    Left, Pause, Right
+    LeftTurn, Pause, RightTurn
 };
 
 enum Direction{
@@ -25,6 +28,7 @@ class SnakeModel {
 
     std::vector<std::vector<MapTileState>> map;
 
+    public:
     SnakeModel(int mapWidth, int mapHeight, int playerStartX, int playerStartY, Direction playerStartDirection);
 
     /**
@@ -34,3 +38,5 @@ class SnakeModel {
      */
     std::vector<std::vector<MapTileState>> advanceState(Command userInput);
 };
+
+#endif
