@@ -12,18 +12,20 @@ enum MapTileState{
     Empty, SnakeTile
 };
 
-class Snake {
+struct Snake {
     Direction currentDirection;
+    int positionX;
+    int positionY;
 
-
+    Snake(Direction currentDirection, int positionX, int positionY);
 };
 
 class SnakeModel {
     Snake player;
-    
+
     std::vector<std::vector<MapTileState>> map;
 
-    SnakeModel(int mapWidth, int mapHeight, int playerStartX, int playerStartY);
+    SnakeModel(int mapWidth, int mapHeight, int playerStartX, int playerStartY, Direction playerStartDirection);
 
     /**
      * Advance State does the following:
