@@ -21,6 +21,7 @@ struct Snake {
     int positionY;
 
     Snake(Direction currentDirection, int positionX, int positionY);
+    bool operator==(const Snake& other) const;
 };
 
 class SnakeModel {
@@ -37,6 +38,10 @@ class SnakeModel {
      * Take the input and move the head.
      */
     std::vector<std::vector<MapTileState>> advanceState(Command userInput);
+
+    std::vector<std::vector<MapTileState>> getMap();
+    Snake getPlayer();
+
 };
 
 #endif
