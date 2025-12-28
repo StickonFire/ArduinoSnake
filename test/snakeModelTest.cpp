@@ -4,25 +4,22 @@
 
 TEST(SnakeModelTest,SnakeConstructorTest){
     Direction expectedDirection = Left;
-    int expectedPositionX = 1;
-    int expectedPositionY = 2;
+    Coordinate expectedPosition(1,2);
 
-    Snake test(expectedDirection,expectedPositionX,expectedPositionY);
+    Snake test(expectedDirection,expectedPosition);
 
     EXPECT_EQ(test.currentDirection,expectedDirection);
-    EXPECT_EQ(test.positionX,expectedPositionX);
-    EXPECT_EQ(test.positionY,expectedPositionY);
+    EXPECT_EQ(test.headPosition,expectedPosition);
 }
 
 TEST(SnakeModelTest,SnakeModelConstructorTest){
     int mapWidth = 8;
     int mapHeight = 8;
-    int playerStartingPositionX = 3;
-    int playerStartingPositionY = 4;
+    Coordinate playerStartingPosition(3,4);
     Direction startingDirection = Right;
-    SnakeModel test(mapWidth, mapHeight, playerStartingPositionX, playerStartingPositionY, startingDirection);
+    SnakeModel test(mapWidth, mapHeight, playerStartingPosition, startingDirection);
 
-    Snake expectedSnake(startingDirection,playerStartingPositionX,playerStartingPositionY);
+    Snake expectedSnake(startingDirection,playerStartingPosition);
     std::vector<std::vector<MapTileState>> expectedMap{
         std::vector<MapTileState>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
         std::vector<MapTileState>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},

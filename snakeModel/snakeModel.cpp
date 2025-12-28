@@ -2,17 +2,26 @@
 
 #include "snakeModel.hpp"
 
-Snake::Snake(Direction direction,int positionX, int positionY): currentDirection(direction), positionX(positionX), positionY(positionY) { }
+Coordinate::Coordinate(int x, int y): x(x), y(y) { }
+
+bool Coordinate::operator==(const Coordinate& other) const{
+	return this->x == other.x
+		&& this->y == other.y;
+}
+
+Snake::Snake(Direction direction,Coordinate headPosition): currentDirection(direction), headPosition(headPosition) { }
 
 bool Snake::operator==(const Snake& other) const {
     return this->currentDirection == other.currentDirection
-        && this->positionX == other.positionX
-        && this->positionY == other.positionY;
+        && this->headPosition == other.headPosition;
 }
 
-SnakeModel::SnakeModel(int mapWidth, int mapHeight, int playerStartX, int playerStartY, Direction playerStartDirection): 
-  map(std::vector<std::vector<MapTileState>>(mapWidth,std::vector<MapTileState>(mapHeight,Empty))), player(playerStartDirection, playerStartX, playerStartY) {
-    this->map[playerStartX][playerStartY] = SnakeTile;
+SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection): 
+  map(std::vector<std::vector<MapTileState>>(mapWidth,std::vector<MapTileState>(mapHeight,Empty))), player(playerStartDirection, startPosition) {
+    this->map[startPosition.x][startPosition.y] = SnakeTile;
+}
+}
+
 }
 
 std::vector<std::vector<MapTileState>> SnakeModel::getMap() {

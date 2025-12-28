@@ -3,6 +3,14 @@
 
 #include <vector>
 
+struct Coordinate{
+    int x;
+    int y;
+
+    Coordinate(int x, int y);
+    bool operator==(const Coordinate& other) const;
+};
+
 enum Command{
     LeftTurn, Pause, RightTurn
 };
@@ -17,10 +25,9 @@ enum MapTileState{
 
 struct Snake {
     Direction currentDirection;
-    int positionX;
-    int positionY;
+    Coordinate headPosition;
 
-    Snake(Direction currentDirection, int positionX, int positionY);
+    Snake(Direction currentDirection, Coordinate headPosition);
     bool operator==(const Snake& other) const;
 };
 
@@ -30,7 +37,7 @@ class SnakeModel {
     std::vector<std::vector<MapTileState>> map;
 
     public:
-    SnakeModel(int mapWidth, int mapHeight, int playerStartX, int playerStartY, Direction playerStartDirection);
+    SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection);
 
     /**
      * Advance State does the following:
