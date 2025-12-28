@@ -37,7 +37,7 @@ class SnakeModel {
      * Take the input and make sure the move is legal. If not, kill.
      * Take the input and move the head.
      */
-    std::vector<std::vector<MapTileState>> advanceState(Command userInput);
+    void advanceState(Command userInput);
 
     std::vector<std::vector<MapTileState>> getMap();
     Snake getPlayer();
