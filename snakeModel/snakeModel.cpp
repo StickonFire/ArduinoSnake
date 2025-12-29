@@ -1,4 +1,5 @@
 #include <vector>
+#include <array>
 
 #include "snakeModel.hpp"
 
