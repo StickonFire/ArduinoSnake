@@ -35,6 +35,8 @@ TEST(SnakeModelTest,SnakeModelConstructorTest){
     EXPECT_EQ(test.getMap(),expectedMap);
     EXPECT_EQ(test.isPaused(),expectedPause);
 
+    SnakeModel testFullConstructor(expectedMap,playerStartingPosition,startingDirection,expectedPause);
+    EXPECT_EQ(test,testFullConstructor);
 }
 
 TEST(SnakeModelTest,ChangeDirectionTest){

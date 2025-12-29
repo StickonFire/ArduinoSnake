@@ -40,6 +40,7 @@ class SnakeModel {
 
     public:
     SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection);
+    SnakeModel(std::vector<std::vector<MapTileState>> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
 
     bool operator==(const SnakeModel& other) const;
 

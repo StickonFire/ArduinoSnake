@@ -23,6 +23,8 @@ SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Di
 	this->paused = false;
 }
 
+SnakeModel::SnakeModel(std::vector<std::vector<MapTileState>> map, Coordinate startPosition, Direction playerStartDirection, bool paused):
+  map(map), player(playerStartDirection,startPosition), paused(paused) { 
 }
 
 bool SnakeModel::operator==(const SnakeModel& other) const {
