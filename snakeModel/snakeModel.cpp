@@ -20,6 +20,28 @@ SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Di
   map(std::vector<std::vector<MapTileState>>(mapWidth,std::vector<MapTileState>(mapHeight,Empty))), player(playerStartDirection, startPosition) {
     this->map[startPosition.x][startPosition.y] = SnakeTile;
 }
+
+Direction changeDirection(Direction initial, Command input){
+	std::array<Direction,4> clockwiseDirections{Up,Right,Down,Left};
+	int position;
+	switch(initial){
+		case Up:
+			position = 0;
+			break;
+		case Right:
+			position = 1;
+			break;
+		case Down:
+			position = 2;
+			break;
+		case Left:
+			position = 3;
+	}
+	if(input == LeftTurn)
+		return clockwiseDirections[(position-1+4)%4];
+	if(input == RightTurn)
+		return clockwiseDirections[(position+1+4)%4];
+	return initial;
 }
 
 }

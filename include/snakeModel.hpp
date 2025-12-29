@@ -12,12 +12,14 @@ struct Coordinate{
 };
 
 enum Command{
-    LeftTurn, Pause, RightTurn
+    LeftTurn, Pause, Straight, RightTurn
 };
 
 enum Direction{
     Up, Right, Down, Left
 };
+
+Direction changeDirection(Direction direction,Command toChange);
 
 enum MapTileState{
     Empty, SnakeTile
