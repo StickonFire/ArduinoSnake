@@ -19,6 +19,9 @@ bool Snake::operator==(const Snake& other) const {
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection): 
   map(std::vector<std::vector<MapTileState>>(mapWidth,std::vector<MapTileState>(mapHeight,Empty))), player(playerStartDirection, startPosition) {
     this->map[startPosition.x][startPosition.y] = SnakeTile;
+	this->paused = false;
+}
+
 }
 
 Direction changeDirection(Direction initial, Command input){

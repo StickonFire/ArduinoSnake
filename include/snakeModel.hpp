@@ -35,7 +35,7 @@ struct Snake {
 
 class SnakeModel {
     Snake player;
-
+    bool paused;
     std::vector<std::vector<MapTileState>> map;
 
     public:
