@@ -25,6 +25,12 @@ SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Di
 
 }
 
+bool SnakeModel::operator==(const SnakeModel& other) const {
+    return this->player == other.player
+        && this->map == other.map
+        && this->paused == other.paused;
+}
+
 Direction changeDirection(Direction initial, Command input){
 	std::array<Direction,4> clockwiseDirections{Up,Right,Down,Left};
 	int position;

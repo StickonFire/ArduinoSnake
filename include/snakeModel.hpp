@@ -41,6 +41,8 @@ class SnakeModel {
     public:
     SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection);
 
+    bool operator==(const SnakeModel& other) const;
+
     /**
      * Advance State does the following:
      * Take the input and make sure the move is legal. If not, kill.
