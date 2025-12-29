@@ -17,6 +17,7 @@ TEST(SnakeModelTest,SnakeModelConstructorTest){
     int mapHeight = 8;
     Coordinate playerStartingPosition(3,4);
     Direction startingDirection = Right;
+    bool expectedPause = false;
     SnakeModel test(mapWidth, mapHeight, playerStartingPosition, startingDirection);
 
     Snake expectedSnake(startingDirection,playerStartingPosition);
@@ -32,6 +33,8 @@ TEST(SnakeModelTest,SnakeModelConstructorTest){
     };
     EXPECT_EQ(test.getPlayer(),expectedSnake);
     EXPECT_EQ(test.getMap(),expectedMap);
+    EXPECT_EQ(test.isPaused(),expectedPause);
+
 }
 
 TEST(SnakeModelTest,ChangeDirectionTest){

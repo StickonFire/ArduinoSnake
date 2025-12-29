@@ -57,3 +57,7 @@ std::vector<std::vector<MapTileState>> SnakeModel::getMap() {
 Snake SnakeModel::getPlayer() {
     return this->player;
 }
+
+bool SnakeModel::isPaused() {
+	return this->paused;
+}

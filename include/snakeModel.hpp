@@ -50,7 +50,7 @@ class SnakeModel {
 
     std::vector<std::vector<MapTileState>> getMap();
     Snake getPlayer();
-
+    bool isPaused();
 };
 
 #endif
