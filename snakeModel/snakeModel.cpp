@@ -66,6 +66,10 @@ Snake SnakeModel::getPlayer() {
     return this->player;
 }
 
+void SnakeModel::togglePause(){
+	this->paused = !paused;
+}
+
 bool SnakeModel::isPaused() {
 	return this->paused;
 }

@@ -53,6 +53,7 @@ class SnakeModel {
 
     std::vector<std::vector<MapTileState>> getMap();
     Snake getPlayer();
+    void togglePause();
     bool isPaused();
 };
 
