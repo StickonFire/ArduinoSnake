@@ -201,5 +201,3 @@ TEST_F(SnakeModelAdvanceStateTest,MovementTest){
         movementTest(testDirection);
     }
 }
-
-}
