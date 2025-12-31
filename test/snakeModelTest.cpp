@@ -120,6 +120,34 @@ class SnakeModelAdvanceStateTest : public testing::Test {
         }
     }
 
+    void movementTest(Direction startDirection){
+        for(Command input: commandList){
+            testModel = SnakeModel(3,3,Coordinate(1,1),startDirection);
+            testModel.advanceState(input);
+            if(input == Pause){
+                SnakeModel expectedModel(3,3,Coordinate(1,1),startDirection);
+                expectedModel.togglePause();
+                EXPECT_EQ(expectedModel,testModel);
+                EXPECT_TRUE(testModel.isPaused());
+            } else {
+                SnakeModel expectedModel(3,3,Coordinate(1,1),startDirection);
+                switch(changeDirection(startDirection,input)){
+                    case Up:
+                        expectedModel = SnakeModel(3,3,Coordinate(0,1),Up);
+                        break;
+                    case Right:
+                        expectedModel = SnakeModel(3,3,Coordinate(1,2),Right);
+                        break;
+                    case Down:
+                        expectedModel = SnakeModel(3,3,Coordinate(2,1),Down);
+                        break;
+                    case Left:
+                        expectedModel = SnakeModel(3,3,Coordinate(1,0),Left);
+                }
+                testSnakeModelEquality(testModel);
+            }
+        }
+    }
 };
 
 TEST_F(SnakeModelAdvanceStateTest,SingleTileTest){
@@ -127,4 +155,10 @@ TEST_F(SnakeModelAdvanceStateTest,SingleTileTest){
         singleTileTest(testDirection);
     }
 }
+TEST_F(SnakeModelAdvanceStateTest,MovementTest){
+    for(Direction testDirection: directionList){
+        movementTest(testDirection);
+    }
+}
+
 }
