@@ -105,8 +105,12 @@ class SnakeModelAdvanceStateTest : public testing::Test {
 
     }
 
+    void testSnakeModelEquality(SnakeModel& expectedModel,std::string message){
+        EXPECT_EQ(expectedModel,testModel) << message << "\nExpected: " << snakeModelToString(expectedModel) << "\nReceived: " << snakeModelToString(testModel);
+    }
+
     void testSnakeModelEquality(SnakeModel& expectedModel){
-        EXPECT_EQ(expectedModel,testModel) << "Expected: " << snakeModelToString(expectedModel) << "\nReceived: " << snakeModelToString(testModel);
+        testSnakeModelEquality(expectedModel,"");
     }
 
     void singleTileTest(Direction startDirection){
