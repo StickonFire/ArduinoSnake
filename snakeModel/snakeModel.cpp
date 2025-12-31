@@ -83,6 +83,36 @@ Direction changeDirection(Direction initial, Command input){
 	return initial;
 }
 
+void SnakeModel::advanceState(Command userInput){
+	if(userInput == Pause){
+		togglePause();
+		return;
+	}
+	if(!paused){
+		player.currentDirection = changeDirection(player.currentDirection,userInput);
+		Coordinate nextPosition(player.headPosition);
+		switch(player.currentDirection){
+			case Up:
+				nextPosition.x--;
+				break;
+			case Right:
+				nextPosition.y++;
+				break;
+			case Down:
+				nextPosition.x++;
+				break;
+			case Left:
+				nextPosition.y--;
+		}
+
+		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0)
+			return;
+		
+		map[player.headPosition.x][player.headPosition.y] = Empty;
+		map[nextPosition.x][nextPosition.y] = SnakeTile;
+		
+		player.headPosition = nextPosition;
+	}
 }
 
 std::vector<std::vector<MapTileState>> SnakeModel::getMap() {
