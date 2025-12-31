@@ -1,4 +1,5 @@
 #include <array>
+#include <string>
 #include <gtest/gtest.h>
 
 #include "snakeModel.hpp"
@@ -67,8 +68,41 @@ class SnakeModelAdvanceStateTest : public testing::Test {
 
     SnakeModelAdvanceStateTest(): testModel(1,1,Coordinate(0,0),Up) { }
 
+    std::string snakeModelToString(SnakeModel& toDescribe){
+        std::string result("SnakeModel: {");
+        std::vector<std::vector<MapTileState>> map = toDescribe.getMap();
+        std::vector<std::string> mapRepresentation(map.size(),std::string(map[0].size(),' '));
+        Snake player(toDescribe.getPlayer());
+        Coordinate headPosition(player.headPosition);
+        char snakeDesign;
+        switch(player.currentDirection){
+            case Up:
+                snakeDesign = 'v';
+                break;
+            case Right:
+                snakeDesign = '<';
+                break;
+            case Down:
+                snakeDesign = 'n';
+                break;
+            case Left:
+                snakeDesign = '>';
+        }
+        mapRepresentation[headPosition.x][headPosition.y] = snakeDesign;
+        result += "Map: {\n";
+        for(std::string row: mapRepresentation)
+            result += std::string("[") + row + "]\n";
+        result += std::string("}");
+        result += "Paused: " + toDescribe.isPaused() ? "True" : "False" + std::string("\n");
+        return result + "}";
+    }
+
     void checkKilled(){
 
+    }
+
+    void testSnakeModelEquality(SnakeModel& expectedModel){
+        EXPECT_EQ(expectedModel,testModel) << "Expected: " << snakeModelToString(expectedModel) << "\nReceived: " << snakeModelToString(testModel);
     }
 
     void singleTileTest(Direction startDirection){
@@ -78,7 +112,7 @@ class SnakeModelAdvanceStateTest : public testing::Test {
             if(input == Pause){
                 SnakeModel expectedModel(1,1,Coordinate(0,0),startDirection);
                 expectedModel.togglePause();
-                EXPECT_EQ(expectedModel,testModel);
+                testSnakeModelEquality(expectedModel);
                 EXPECT_TRUE(testModel.isPaused());
             } else {
                 checkKilled();
