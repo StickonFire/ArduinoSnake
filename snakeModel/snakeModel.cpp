@@ -10,6 +10,8 @@ std::string to_string(Command convert){
 			return "LeftTurn";
 		case Pause:
 			return "Pause";
+		case Straight:
+			return "Straight";
 		case RightTurn:
 			return "RightTurn";
 	}
