@@ -163,6 +163,39 @@ TEST_F(SnakeModelAdvanceStateTest,SingleTileTest){
         singleTileTest(testDirection);
     }
 }
+
+TEST_F(SnakeModelAdvanceStateTest,PauseTest){
+    testModel = SnakeModel(1,3,Coordinate(0,0),Right);
+    SnakeModel expectedModel(testModel);
+    testSnakeModelEquality(expectedModel,"Initialization Test");
+
+    for(int i = 1; i < 3; i++){
+        std::string messageStart = "Test position" + std::to_string(i-1) + ", case ";
+
+        //Pause Test
+        testModel.advanceState(Pause);
+        expectedModel.togglePause();
+        for(Command input: commandList) {
+            if(input != Pause) {
+                testModel.advanceState(input);
+                std::string message = messageStart + "Command: " + to_string(input);
+                testSnakeModelEquality(expectedModel,message);
+            }
+        }
+
+        //Unpauses
+        testModel.advanceState(Pause);
+        expectedModel.togglePause();
+        testSnakeModelEquality(expectedModel,messageStart + "Command: Pause");
+
+        testModel.advanceState(Straight);
+        std::vector<std::vector<MapTileState>> nextMap{std::vector(3,Empty)};
+        nextMap[0][i] = SnakeTile;
+        expectedModel = SnakeModel(nextMap,Coordinate(0,i),Right,false);
+        testSnakeModelEquality(expectedModel,messageStart + "Moving to Next State");
+    }
+}
+
 TEST_F(SnakeModelAdvanceStateTest,MovementTest){
     for(Direction testDirection: directionList){
         movementTest(testDirection);
