@@ -92,8 +92,12 @@ class SnakeModelAdvanceStateTest : public testing::Test {
         result += "Map: {\n";
         for(std::string row: mapRepresentation)
             result += std::string("[") + row + "]\n";
-        result += std::string("}");
-        result += "Paused: " + toDescribe.isPaused() ? "True" : "False" + std::string("\n");
+        result += std::string("}\n");
+        result += "Paused: ";
+        if(toDescribe.isPaused())
+            result += "True\n";
+        else 
+            result += "False\n";
         return result + "}";
     }
 
