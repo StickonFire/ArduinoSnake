@@ -1,7 +1,32 @@
 #include <vector>
 #include <array>
+#include <string>
 
 #include "snakeModel.hpp"
+
+std::string to_string(Command convert){
+	switch(convert){
+		case LeftTurn:
+			return "LeftTurn";
+		case Pause:
+			return "Pause";
+		case RightTurn:
+			return "RightTurn";
+	}
+}
+
+std::string to_string(Direction convert){
+	switch(convert){
+		case Up:
+			return "Up";
+		case Right:
+			return "Right";
+		case Down:
+			return "Down";
+		case Left:
+			return "Left";
+	}
+}
 
 Coordinate::Coordinate(int x, int y): x(x), y(y) { }
 

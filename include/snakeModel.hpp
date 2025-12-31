@@ -15,9 +15,13 @@ enum Command{
     LeftTurn, Pause, Straight, RightTurn
 };
 
+std::string to_string(Command convert);
+
 enum Direction{
     Up, Right, Down, Left
 };
+
+std::string to_string(Direction convert);
 
 Direction changeDirection(Direction direction,Command toChange);
 
