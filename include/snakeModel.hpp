@@ -1,7 +1,8 @@
 #ifndef SNAKEMODEL
 #define SNAKEMODEL
-
 #include <vector>
+
+#include "modelControllerCommUnits.hpp"
 
 struct Coordinate{
     int x;
@@ -11,12 +12,6 @@ struct Coordinate{
     bool operator==(const Coordinate& other) const;
 };
 
-enum Command{
-    LeftTurn, Pause, Straight, RightTurn
-};
-
-std::string to_string(Command convert);
-
 enum Direction{
     Up, Right, Down, Left
 };
@@ -24,10 +19,6 @@ enum Direction{
 std::string to_string(Direction convert);
 
 Direction changeDirection(Direction direction,Command toChange);
-
-enum MapTileState{
-    Empty, SnakeTile
-};
 
 struct Snake {
     Direction currentDirection;

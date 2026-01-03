@@ -2,7 +2,9 @@
 #include <array>
 #include <string>
 
+#include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
+
 
 std::string to_string(Command convert){
 	switch(convert){

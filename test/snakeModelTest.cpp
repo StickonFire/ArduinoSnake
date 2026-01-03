@@ -2,6 +2,7 @@
 #include <string>
 #include <gtest/gtest.h>
 
+#include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
 
 using testing::Test;
