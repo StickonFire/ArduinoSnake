@@ -19,7 +19,9 @@ enable_testing()
 add_executable(
     ArduinoSnakeTest
     snakeModel/snakeModel.cpp
+    controller/controller.cpp
     test/snakeModelTest.cpp
+    test/controllerTest.cpp
 )
 
 target_link_libraries(
