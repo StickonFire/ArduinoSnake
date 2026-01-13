@@ -22,6 +22,7 @@ add_executable(
     controller/controller.cpp
     test/snakeModelTest.cpp
     test/controllerTest.cpp
+    test/constrainedVectorTest.cpp
 )
 
 target_link_libraries(
