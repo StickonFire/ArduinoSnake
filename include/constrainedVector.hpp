@@ -11,6 +11,12 @@ class ConstrainedVector{
     std::array<N,maxSize> array;
 
     public:
+
+    ConstrainedVector(){
+        this->width = 0;
+        this->array = std::array<N,maxSize>();
+    }
+
     ConstrainedVector(int width, N fillValue): width(width), array() {
         if(width > maxSize){
             throw std::invalid_argument("width provided is greater than the maxSize of the ConstrainedVector.");
