@@ -24,12 +24,14 @@ TEST(ConstrainedVectorFillConstructorTest,size0){
     ConstrainedVector<MapTileState,10> test(0,SnakeTile);
     ConstrainedVector<MapTileState,10> expected(0,std::array<MapTileState,10>());
     EXPECT_EQ(test,expected);
+    EXPECT_EQ(test.size(),0);
 }
 
 TEST(ConstrainedVectorFillConstructorTest,sizeEqualsCapacity){
     ConstrainedVector<MapTileState,4> test(4,SnakeTile);
     ConstrainedVector<MapTileState,4> expected(4,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile});
     EXPECT_EQ(test,expected);
+    EXPECT_EQ(test.size(),4);
 }
 
 TEST(ConstrainedVectorFillConstructorTest,sizeOverCapacity){
