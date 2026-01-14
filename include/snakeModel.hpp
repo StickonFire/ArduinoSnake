@@ -1,8 +1,9 @@
 #ifndef SNAKEMODEL
 #define SNAKEMODEL
-#include <vector>
 
+#include "hardwareValues.hpp"
 #include "modelControllerCommUnits.hpp"
+#include "constrainedVector.hpp"
 
 struct Coordinate{
     int x;
@@ -31,11 +32,11 @@ struct Snake {
 class SnakeModel {
     Snake player;
     bool paused;
-    std::vector<std::vector<MapTileState>> map;
+    ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> map;
 
     public:
     SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection);
-    SnakeModel(std::vector<std::vector<MapTileState>> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
+    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
 
     bool operator==(const SnakeModel& other) const;
 
@@ -46,7 +47,7 @@ class SnakeModel {
      */
     void advanceState(Command userInput);
 
-    std::vector<std::vector<MapTileState>> getMap();
+    ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> getMap();
     Snake getPlayer();
     void togglePause();
     bool isPaused();

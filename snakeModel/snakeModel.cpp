@@ -47,12 +47,12 @@ bool Snake::operator==(const Snake& other) const {
 }
 
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection): 
-  map(std::vector<std::vector<MapTileState>>(mapWidth,std::vector<MapTileState>(mapHeight,Empty))), player(playerStartDirection, startPosition) {
+  map(ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth>(mapWidth,ConstrainedVector<MapTileState,ledHeight>(mapHeight,Empty))), player(playerStartDirection, startPosition) {
     this->map[startPosition.x][startPosition.y] = SnakeTile;
 	this->paused = false;
 }
 
-SnakeModel::SnakeModel(std::vector<std::vector<MapTileState>> map, Coordinate startPosition, Direction playerStartDirection, bool paused):
+SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> map, Coordinate startPosition, Direction playerStartDirection, bool paused):
   map(map), player(playerStartDirection,startPosition), paused(paused) { 
 }
 
@@ -117,7 +117,7 @@ void SnakeModel::advanceState(Command userInput){
 	}
 }
 
-std::vector<std::vector<MapTileState>> SnakeModel::getMap() {
+ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> SnakeModel::getMap() {
     return this->map;
 }
 
