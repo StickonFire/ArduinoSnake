@@ -48,6 +48,10 @@ class ConstrainedVector{
         }
         return true;
     }
+
+    int size(){
+        return this->width;
+    }
 };
 
 #endif
