@@ -7,43 +7,43 @@
 
 template <typename N, size_t maxSize>
 class ConstrainedVector{
-    int size;
+    int width;
     std::array<N,maxSize> array;
 
     public:
-    ConstrainedVector(int width, N fillValue): size(width) {
+    ConstrainedVector(int width, N fillValue): width(width), array() {
         if(width > maxSize){
             throw std::invalid_argument("width provided is greater than the maxSize of the ConstrainedVector.");
         }
-        for(int i = 0; i < size; i++){
+        for(int i = 0; i < width; i++){
             array[i] = fillValue;
         }
     }
 
-    ConstrainedVector(std::initializer_list<N> l): size(l.size()) {
+    ConstrainedVector(std::initializer_list<N> l): width(l.size()) {
         if(l.size() > maxSize)
             throw std::invalid_argument("Initializer list size greater than the maxSize of the ConstrainedVector");
         std::copy(l.begin(),l.end(),array.begin());
     }
 
-    ConstrainedVector(int size, std::array<N,maxSize> array): size(size), array(array) { }
+    ConstrainedVector(int width, std::array<N,maxSize> array): width(width), array(array) { }
 
     N operator[](int index) const{
-        if(index >= size || index < 0)
+        if(index >= width || index < 0)
             throw std::invalid_argument("illegal index.");
         return array[index];
     }
     N &operator[](int index){
-        if(index >= size || index < 0)
+        if(index >= width || index < 0)
             throw std::invalid_argument("Illegal index.");
         return array[index];
     }
 
     bool operator==(const ConstrainedVector<N,maxSize> other) const{
-        if(this->size != other.size)
+        if(this->width != other.width)
             return false;
-        for(int i = 0; i < this->size; i++){
-            if(this->array[i] != other.array[i])
+        for(int i = 0; i < this->width; i++){
+            if(!(this->array[i] == other.array[i]))
                 return false;
         }
         return true;
