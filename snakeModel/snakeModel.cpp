@@ -16,6 +16,8 @@ std::string to_string(Command convert){
 			return "Straight";
 		case RightTurn:
 			return "RightTurn";
+		default:
+			return "Not Implemented";
 	}
 }
 
@@ -29,6 +31,8 @@ std::string to_string(Direction convert){
 			return "Down";
 		case Left:
 			return "Left";
+		default:
+			return "Not Implemented";
 	}
 }
 
