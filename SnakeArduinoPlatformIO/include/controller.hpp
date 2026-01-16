@@ -2,6 +2,7 @@
 #define CONTROLLER
 #include <array>
 #include <cstddef>
+#include <cstdint>
 
 #include "hardwareValues.hpp"
 #include "modelControllerCommUnits.hpp"
@@ -37,7 +38,7 @@ class ArduinoSnakeController{
 
     public:
         ArduinoSnakeController(ControlsParser inputParser,ConstrainedVectorToArray outputParser, SnakeModel model);
-        void moveStep(std::array<bool,3> &inputs,uint8_t outputLocation[ledRows][ledCols]);
+        void moveStep(std::array<bool,3> &inputs, uint8_t outputLocation[ledRows][ledCols]);
 };
 
 #endif

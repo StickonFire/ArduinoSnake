@@ -1,6 +1,7 @@
 #include <array>
 #include <string>
 #include <map>
+#include <cstdint>
 #include <gtest/gtest.h>
 
 #include "modelControllerCommUnits.hpp"
@@ -30,19 +31,19 @@ class ConstrainedVectorToArrayTest : public testing::Test {
     protected:
         ConstrainedVectorToArray test;
         ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> input;
-        bool result[ledRows][ledCols];
-        bool expected[ledRows][ledCols];
+        uint8_t result[ledRows][ledCols];
+        uint8_t expected[ledRows][ledCols];
 
         ConstrainedVectorToArrayTest(){
             for(int i = 0; i < ledRows; i++){
                 for(int j = 0; j < ledCols; j++){
-                    result[i][j] = false;
-                    expected[i][j] = true;
+                    result[i][j] = 0;
+                    expected[i][j] = 1;
                 }
             }
         }
 
-        void setUpExpected(int startRow, int startCol, ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> init){
+        void setUpExpected(int startRow, int startCol, ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> init){
             for(int i = 0; i < init.size(); i++){
                 for(int j = 0; j < init[0].size(); j++){
                     expected[i+startRow][j+startCol] = init[i][j];
@@ -73,8 +74,8 @@ TEST_F(ConstrainedVectorToArrayTest,OddWidth){
     input = ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>{
         {Empty,SnakeTile,Empty},
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false,true,false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0,1,0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -87,8 +88,8 @@ TEST_F(ConstrainedVectorToArrayTest,EvenWidth){
     input = ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>{
         {Empty,Empty},
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false,false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0,0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -101,8 +102,8 @@ TEST_F(ConstrainedVectorToArrayTest,FullWidth){
     input = ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>{
         ConstrainedVector<MapTileState,ledCols>(ledCols,Empty)
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        ConstrainedVector<bool,ledCols>(ledCols,false)
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        ConstrainedVector<uint8_t,ledCols>(ledCols,0)
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -117,10 +118,10 @@ TEST_F(ConstrainedVectorToArrayTest,OddHeight){
         {SnakeTile},
         {Empty}
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false},
-        {true},
-        {false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0},
+        {1},
+        {0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -138,13 +139,13 @@ TEST_F(ConstrainedVectorToArrayTest,EvenHeight){
         {Empty},
         {Empty}
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false},
-        {false},
-        {true},
-        {true},
-        {false},
-        {false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0},
+        {0},
+        {1},
+        {1},
+        {0},
+        {0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -164,15 +165,15 @@ TEST_F(ConstrainedVectorToArrayTest,FullHeight){
         {Empty},
         {Empty}
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false},
-        {false},
-        {false},
-        {true},
-        {true},
-        {false},
-        {false},
-        {false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0},
+        {0},
+        {0},
+        {1},
+        {1},
+        {0},
+        {0},
+        {0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -192,15 +193,15 @@ TEST_F(ConstrainedVectorToArrayTest,FullScreen){
         {Empty,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,Empty},
         {Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty}
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false,false,false,false,false,false,false,false,false,false,false,false},
-        {false,true,true,true,true,true,true,true,true,true,true,false},
-        {false,true,false,false,false,false,false,false,false,false,true,false},
-        {false,true,false,true,true,true,true,true,true,false,true,false},
-        {false,true,false,true,true,true,true,true,true,false,true,false},
-        {false,true,false,false,false,false,false,false,false,false,true,false},
-        {false,true,true,true,true,true,true,true,true,true,true,false},
-        {false,false,false,false,false,false,false,false,false,false,false,false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,1,1,1,1,1,1,1,1,1,1,0},
+        {0,1,0,0,0,0,0,0,0,0,1,0},
+        {0,1,0,1,1,1,1,1,1,0,1,0},
+        {0,1,0,1,1,1,1,1,1,0,1,0},
+        {0,1,0,0,0,0,0,0,0,0,1,0},
+        {0,1,1,1,1,1,1,1,1,1,1,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
@@ -214,9 +215,9 @@ TEST_F(ConstrainedVectorToArrayTest,InsideCheck){
         {Empty,SnakeTile,Empty},
         {SnakeTile,Empty,Empty}
     };
-    ConstrainedVector<ConstrainedVector<bool,ledCols>,ledRows> initExpected{
-        {false,true,false},
-        {true,false,false}
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
+        {0,1,0},
+        {1,0,0}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);

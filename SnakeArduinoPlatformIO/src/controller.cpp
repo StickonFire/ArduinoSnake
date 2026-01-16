@@ -1,6 +1,7 @@
 #include <vector>
 #include <array>
 #include <cstddef>
+#include <cstdint>
 
 #include "hardwareValues.hpp"
 #include "modelControllerCommUnits.hpp"
