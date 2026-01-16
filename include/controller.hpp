@@ -29,4 +29,14 @@ class ControlsParser{
         Command parseButtons(std::array<bool,3> &inputs);
 };
 
+class ArduinoSnakeController{
+    ControlsParser inputParser;
+    ConstrainedVectorToArray outputParser;
+    SnakeModel model;
+
+    public:
+        ArduinoSnakeController(ControlsParser inputParser,ConstrainedVectorToArray outputParser, SnakeModel model);
+        void moveStep(std::array<bool,3> &inputs,bool outputLocation[ledRows][ledCols]);
+};
+
 #endif
