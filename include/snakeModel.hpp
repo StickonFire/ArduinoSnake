@@ -32,11 +32,11 @@ struct Snake {
 class SnakeModel {
     Snake player;
     bool paused;
-    ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> map;
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map;
 
     public:
     SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection);
-    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
+    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
 
     bool operator==(const SnakeModel& other) const;
 
@@ -47,7 +47,7 @@ class SnakeModel {
      */
     void advanceState(Command userInput);
 
-    ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> getMap();
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> getMap();
     Snake getPlayer();
     void togglePause();
     bool isPaused();

@@ -26,15 +26,15 @@ TEST(SnakeModelTest,SnakeModelConstructorTest){
     SnakeModel test(mapWidth, mapHeight, playerStartingPosition, startingDirection);
 
     Snake expectedSnake(startingDirection,playerStartingPosition);
-    ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> expectedMap{
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,SnakeTile,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
-        ConstrainedVector<MapTileState,ledHeight>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> expectedMap{
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,SnakeTile,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        ConstrainedVector<MapTileState,ledCols>{Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
     };
     EXPECT_EQ(test.getPlayer(),expectedSnake);
     EXPECT_EQ(test.getMap(),expectedMap);
@@ -71,7 +71,7 @@ class SnakeModelAdvanceStateTest : public testing::Test {
 
     std::string snakeModelToString(SnakeModel& toDescribe){
         std::string result("SnakeModel: {");
-        ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> map = toDescribe.getMap();
+        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map = toDescribe.getMap();
         std::vector<std::string> mapRepresentation(map.size(),std::string(map[0].size(),' '));
         Snake player(toDescribe.getPlayer());
         Coordinate headPosition(player.headPosition);
@@ -190,7 +190,7 @@ TEST_F(SnakeModelAdvanceStateTest,PauseTest){
         testSnakeModelEquality(expectedModel,messageStart + "Command: Pause");
 
         testModel.advanceState(Straight);
-        ConstrainedVector<ConstrainedVector<MapTileState,ledHeight>,ledWidth> nextMap{ConstrainedVector<MapTileState,ledHeight>(3,Empty)};
+        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> nextMap{ConstrainedVector<MapTileState,ledCols>(3,Empty)};
         nextMap[0][i] = SnakeTile;
         expectedModel = SnakeModel(nextMap,Coordinate(0,i),Right,false);
         testSnakeModelEquality(expectedModel,messageStart + "Moving to Next State");
