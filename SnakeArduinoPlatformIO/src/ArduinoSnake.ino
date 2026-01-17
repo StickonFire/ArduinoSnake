@@ -14,7 +14,7 @@ ArduinoLEDMatrix matrix;
 ModulinoButtons buttons;
 
 ArduinoSnakeController controller(ControlsParser(),ConstrainedVectorToArray(),
-    SnakeModel(ledRows,ledCols,Coordinate(ledRows/2,ledCols/2),Right));
+    SnakeModel(ledRows,ledCols,Coordinate(ledRows/2,ledCols/2),Right,true));
 uint8_t frame[ledRows][ledCols];
 int delayTime = 100;
 std::array<bool,3> buttonStates;

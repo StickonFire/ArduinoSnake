@@ -35,7 +35,7 @@ class SnakeModel {
     ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map;
 
     public:
-    SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection);
+    SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused = false);
     SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
 
     bool operator==(const SnakeModel& other) const;
