@@ -1,6 +1,8 @@
 #ifndef CONTROLLER
 #define CONTROLLER
 #include <array>
+#include <cstddef>
+#include <cstdint>
 
 #include "hardwareValues.hpp"
 #include "modelControllerCommUnits.hpp"
@@ -14,7 +16,7 @@ class ConstrainedVectorToArray{
         /**
          * Given a 2D CosntrainedVector, convert it into a bool array readable by a arduino LED Matrix.
          */
-        void convertConstrainedVector(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> &input, bool output[ledRows][ledCols]);
+        void convertConstrainedVector(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> input, uint8_t output[ledRows][ledCols]);
 };
 
 /**
@@ -36,7 +38,7 @@ class ArduinoSnakeController{
 
     public:
         ArduinoSnakeController(ControlsParser inputParser,ConstrainedVectorToArray outputParser, SnakeModel model);
-        void moveStep(std::array<bool,3> &inputs,bool outputLocation[ledRows][ledCols]);
+        void moveStep(std::array<bool,3> &inputs, uint8_t outputLocation[ledRows][ledCols]);
 };
 
 #endif
