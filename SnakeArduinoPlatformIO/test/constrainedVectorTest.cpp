@@ -18,18 +18,28 @@ TEST(ConstrainedVectorEqualityTest,CycleUnequal){
     EXPECT_FALSE(comparisonPoint == differsBySize);
     ConstrainedVector<MapTileState,3> differsByContent(2,std::array<MapTileState,3>{SnakeTile,Empty,Empty});
     EXPECT_FALSE(comparisonPoint == differsBySize);
+    ConstrainedVector<MapTileState,3> differsByFront(2,std::array<MapTileState,3>{SnakeTile,Empty,Empty},1,2);
+    EXPECT_FALSE(comparisonPoint == differsByFront);
+    ConstrainedVector<MapTileState,3> differsByBack(2,std::array<MapTileState,3>{SnakeTile,Empty,Empty},0,3);
+    EXPECT_FALSE(comparisonPoint == differsByBack);
+}
+
+TEST(ConstrainedVectorEqualityTest,OffsetInArray){
+    ConstrainedVector<MapTileState,3> comparisonPoint(1,std::array<MapTileState,3>{SnakeTile});
+    ConstrainedVector<MapTileState,3> shouldUnequal(1,std::array<MapTileState,3>{Empty,SnakeTile},1,2);
+    EXPECT_FALSE(comparisonPoint == shouldUnequal);
 }
 
 TEST(ConstrainedVectorFillConstructorTest,size0){
     ConstrainedVector<MapTileState,10> test(0,SnakeTile);
-    ConstrainedVector<MapTileState,10> expected(0,std::array<MapTileState,10>());
+    ConstrainedVector<MapTileState,10> expected(0,std::array<MapTileState,10>(),0,0);
     EXPECT_EQ(test,expected);
     EXPECT_EQ(test.size(),0);
 }
 
 TEST(ConstrainedVectorFillConstructorTest,sizeEqualsCapacity){
     ConstrainedVector<MapTileState,4> test(4,SnakeTile);
-    ConstrainedVector<MapTileState,4> expected(4,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile});
+    ConstrainedVector<MapTileState,4> expected(4,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile},0,4);
     EXPECT_EQ(test,expected);
     EXPECT_EQ(test.size(),4);
 }
@@ -46,13 +56,13 @@ TEST(ConstrainedVectorFillConstructorTest,sizeOverCapacity){
 
 TEST(ConstrainedVectorInitializerTest,UnderConstraint){
     ConstrainedVector<MapTileState,10> test{SnakeTile,Empty,SnakeTile,Empty,SnakeTile};
-    ConstrainedVector<MapTileState,10> expected(5,std::array<MapTileState,10>{SnakeTile,Empty,SnakeTile,Empty,SnakeTile,Empty,Empty,Empty,Empty,Empty});
+    ConstrainedVector<MapTileState,10> expected(5,std::array<MapTileState,10>{SnakeTile,Empty,SnakeTile,Empty,SnakeTile,Empty,Empty,Empty,Empty,Empty},0,5);
     EXPECT_EQ(test,expected);
 }
 
 TEST(ConstrainedVectorInitializerTest,EqualsConstraint){
     ConstrainedVector<MapTileState,5> test{SnakeTile,Empty,SnakeTile,Empty,SnakeTile};
-    ConstrainedVector<MapTileState,5> expected(5,std::array<MapTileState,5>{SnakeTile,Empty,SnakeTile,Empty,SnakeTile});
+    ConstrainedVector<MapTileState,5> expected(5,std::array<MapTileState,5>{SnakeTile,Empty,SnakeTile,Empty,SnakeTile},0,5);
     EXPECT_EQ(test,expected);
 }
 
@@ -84,8 +94,32 @@ TEST(ConstrainedVectorGetOperatorTest,ModifyingAnElement){
     EXPECT_EQ(test[0],SnakeTile);
 }
 
+TEST(ConstrainedVectorGetOperatorTest,OffsetNoOverflow){
+    ConstrainedVector<int,5> test(4,std::array<int,5>{0,1,2,3,4},3,2);
+    int expected = 4;
+    EXPECT_EQ(test[1],expected);
+    test[0] = 0;
+    ConstrainedVector<int,5> expectedVector(4,std::array<int,5>{0,1,2,0,4},3,2);
+    EXPECT_EQ(test,expectedVector);
+}
+
+TEST(ConstrainedVectorGetOperatorTest,OffsetWithOverflow){
+    ConstrainedVector<int,5> test(4,std::array<int,5>{0,1,2,3,4},3,2);
+    int expected = 1;
+    EXPECT_EQ(test[3],expected);
+    test[2] = 2;
+    ConstrainedVector<int,5> expectedVector(4,std::array<int,5>{2,1,2,3,4},3,2);
+    EXPECT_EQ(test,expectedVector);
+}
+
 TEST(ConstrainedVectorGetOperatorTest,BetweenSizeAndCapacity){
     ConstrainedVector<MapTileState,5> test{SnakeTile,SnakeTile,SnakeTile};
     EXPECT_THROW(test[3],std::invalid_argument);
     EXPECT_THROW(test[4] = Empty,std::invalid_argument);
+}
+
+TEST(ConstrainedVectorGetOperatorTest,BetweenSizeAndCapacityWithOffset){
+    ConstrainedVector<int,5> test(3,std::array<int,5>{0,1,2,3,4},1,4);
+    EXPECT_THROW(test[3],std::invalid_argument);
+    EXPECT_THROW(test[3] = Empty,std::invalid_argument);
 }
