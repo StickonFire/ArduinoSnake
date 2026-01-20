@@ -66,7 +66,12 @@ class ConstrainedVector{
     }
 
     bool push_back(N toAdd){
-        return false;
+        if(width == maxSize)
+            return false;
+        array[back] = toAdd;
+        back = (back+1)%maxSize;
+        width++;
+        return true;
     }
 
     bool pop_front(){
