@@ -160,3 +160,40 @@ TEST_F(ConstrainedVectorPushTest,AlmostFullOverflow){
     ConstrainedVector<MapTileState,4> expected(2,{SnakeTile,SnakeTile,SnakeTile,SnakeTile},1,1);
     pushTest(test,expected,SnakeTile,"Push fails when the ConstrainedVector's near overflow, but empty");
 }
+
+class ConstrainedVectorPopTest : public testing::Test {
+    protected:
+        void pushTest(ConstrainedVector<MapTileState,4> &test, ConstrainedVector<MapTileState,4> &expected,std::string message){
+            EXPECT_TRUE(test.pop_front()) << message;
+            EXPECT_EQ(test,expected) << message;
+        }
+};
+
+TEST_F(ConstrainedVectorPopTest,FullNoOverflow){
+    ConstrainedVector<MapTileState,4> test(4,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile},1,1);
+    ConstrainedVector<MapTileState,4> expected(3,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile},2,1);
+    pushTest(test,expected,"Pop fails when the ConstrainedVector's Full");
+}
+
+TEST_F(ConstrainedVectorPopTest,AlmostEmptyNoOverflow){
+    ConstrainedVector<MapTileState,4> test(1,std::array<MapTileState,4>{Empty,Empty,Empty,Empty},0,1);
+    ConstrainedVector<MapTileState,4> expected(0,std::array<MapTileState,4>{Empty,Empty,Empty,Empty},1,1);
+    pushTest(test,expected,"Pop fails when the ConstrainedVector's Almost Empty");
+}
+
+TEST_F(ConstrainedVectorPopTest,EmptyVector){
+    ConstrainedVector<MapTileState,4> test(0,{Empty,Empty,Empty,Empty},0,0);
+    EXPECT_FALSE(test.pop_front());
+}
+
+TEST_F(ConstrainedVectorPopTest,FullOverflow){
+    ConstrainedVector<MapTileState,4> test(4,std::array<MapTileState,4>{Empty,Empty,Empty,Empty},3,3);
+    ConstrainedVector<MapTileState,4> expected(3,std::array<MapTileState,4>{Empty,Empty,Empty,Empty},0,3);
+    pushTest(test,expected,"pop fails when the ConstrainedVector's full and overflows");
+}
+
+TEST_F(ConstrainedVectorPopTest,AlmostEmptyOverflow){
+    ConstrainedVector<MapTileState,4> test(1,std::array<MapTileState,4>{Empty,Empty,Empty,Empty},3,0);
+    ConstrainedVector<MapTileState,4> expected(0,std::array<MapTileState,4>{Empty,Empty,Empty,Empty},0,0);
+    pushTest(test,expected,"Pop fails when the ConstrainedVector's near overflow and near empty");
+}
