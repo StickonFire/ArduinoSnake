@@ -123,3 +123,40 @@ TEST(ConstrainedVectorGetOperatorTest,BetweenSizeAndCapacityWithOffset){
     EXPECT_THROW(test[3],std::invalid_argument);
     EXPECT_THROW(test[3] = Empty,std::invalid_argument);
 }
+
+class ConstrainedVectorPushTest : public testing::Test {
+    protected:
+        void pushTest(ConstrainedVector<MapTileState,4> &test, ConstrainedVector<MapTileState,4> &expected, MapTileState toPush,std::string message){
+            EXPECT_TRUE(test.push_back(toPush)) << message;
+            EXPECT_EQ(test,expected) << message;
+        }
+};
+
+TEST_F(ConstrainedVectorPushTest,EmptyNoOverflow){
+    ConstrainedVector<MapTileState,4> test(0,Empty);
+    ConstrainedVector<MapTileState,4> expected(1,{SnakeTile,Empty,Empty,Empty},0,1);
+    pushTest(test,expected,SnakeTile,"Push fails when the ConstrainedVector's Empty");
+}
+
+TEST_F(ConstrainedVectorPushTest,AlmostFullNoOverflow){
+    ConstrainedVector<MapTileState,4> test(3,{SnakeTile,SnakeTile,SnakeTile,Empty},0,3);
+    ConstrainedVector<MapTileState,4> expected(4,{SnakeTile,SnakeTile,SnakeTile,SnakeTile},0,0);
+    pushTest(test,expected,SnakeTile,"Push fails when the ConstrainedVector's Almost Full");
+}
+
+TEST_F(ConstrainedVectorPushTest,Full){
+    ConstrainedVector<MapTileState,4> test(4,{Empty,Empty,Empty,Empty},0,0);
+    EXPECT_FALSE(test.push_back(SnakeTile));
+}
+
+TEST_F(ConstrainedVectorPushTest,EmptyOverflow){
+    ConstrainedVector<MapTileState,4> test(0,{Empty,Empty,Empty,Empty},3,3);
+    ConstrainedVector<MapTileState,4> expected(1,{Empty,Empty,Empty,Empty},3,0);
+    pushTest(test,expected,SnakeTile,"Push fails when the ConstrainedVector's Empty and overflows");
+}
+
+TEST_F(ConstrainedVectorPushTest,AlmostFullOverflow){
+    ConstrainedVector<MapTileState,4> test(1,{Empty,SnakeTile,SnakeTile,SnakeTile},1,0);
+    ConstrainedVector<MapTileState,4> expected(2,{SnakeTile,SnakeTile,SnakeTile,SnakeTile},1,1);
+    pushTest(test,expected,SnakeTile,"Push fails when the ConstrainedVector's near overflow, but empty");
+}
