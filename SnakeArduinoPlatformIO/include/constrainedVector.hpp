@@ -64,6 +64,14 @@ class ConstrainedVector{
     int size(){
         return this->width;
     }
+
+    bool push_back(N toAdd){
+        return false;
+    }
+
+    bool pop_front(){
+        return false;
+    }
 };
 
 #endif
