@@ -75,7 +75,11 @@ class ConstrainedVector{
     }
 
     bool pop_front(){
-        return false;
+        if(width == 0)
+            return false;
+        front = (front+1)%maxSize;
+        width--;
+        return true;
     }
 };
 
