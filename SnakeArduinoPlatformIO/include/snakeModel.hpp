@@ -24,8 +24,19 @@ Direction changeDirection(Direction direction,Command toChange);
 struct Snake {
     Direction currentDirection;
     Coordinate headPosition;
+    Coordinate tailPosition;
+    ConstrainedVector<Direction,ledNums> nodeDirection;
 
     Snake(Direction currentDirection, Coordinate headPosition);
+    Snake(Direction currentDirection, Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection);
+    /**
+     * Move the headPostion in the direction provided, then pushes nextDirection to nodeDirection.
+     */
+    bool moveHead(Direction nextDirection);
+    /**
+     * Moves the tailPosition in the direction specified in the front of  nodeDirection, then pops nodeDirection.
+     */
+    bool moveTail();
     bool operator==(const Snake& other) const;
 };
 
