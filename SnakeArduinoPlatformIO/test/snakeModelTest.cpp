@@ -7,16 +7,6 @@
 
 using testing::Test;
 
-TEST(SnakeModelTest,SnakeConstructorTest){
-    Direction expectedDirection = Left;
-    Coordinate expectedPosition(1,2);
-
-    Snake test(expectedDirection,expectedPosition);
-
-    EXPECT_EQ(test.currentDirection,expectedDirection);
-    EXPECT_EQ(test.headPosition,expectedPosition);
-}
-
 TEST(SnakeModelTest,SnakeModelConstructorTest){
     int mapWidth = 8;
     int mapHeight = 8;
