@@ -38,6 +38,22 @@ std::string to_string(Direction convert){
 
 Coordinate::Coordinate(int x, int y): x(x), y(y) { }
 
+Coordinate::Coordinate(Coordinate original, Direction direction): x(original.x), y(original.y) {
+	switch(direction){
+		case Up:
+			this->x--;
+			break;
+		case Right:
+			this->y++;
+			break;
+		case Down:
+			this->x++;
+			break;
+		case Left:
+			this->y--;
+	}
+}
+
 bool Coordinate::operator==(const Coordinate& other) const{
 	return this->x == other.x
 		&& this->y == other.y;

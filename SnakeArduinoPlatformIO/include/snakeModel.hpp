@@ -5,14 +5,6 @@
 #include "modelControllerCommUnits.hpp"
 #include "constrainedVector.hpp"
 
-struct Coordinate{
-    int x;
-    int y;
-
-    Coordinate(int x, int y);
-    bool operator==(const Coordinate& other) const;
-};
-
 enum Direction{
     Up, Right, Down, Left
 };
@@ -20,6 +12,15 @@ enum Direction{
 std::string to_string(Direction convert);
 
 Direction changeDirection(Direction direction,Command toChange);
+
+struct Coordinate{
+    int x;
+    int y;
+
+    Coordinate(int x, int y);
+    Coordinate(Coordinate original,Direction other);
+    bool operator==(const Coordinate& other) const;
+};
 
 struct Snake {
     Direction currentDirection;
