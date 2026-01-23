@@ -66,23 +66,84 @@ TEST(SnakeEqualityTest,CycleUnequal){
 }
 
 class SnakeMoveHeadTest : public testing::Test {
-    //Coordinate startingHead;
-    //Coordinate expectedHead;
-
+    protected: 
+    void moveHeadTest(Coordinate startingHead, Coordinate expectedHead, Coordinate tail, ConstrainedVector<Direction,ledNums> startingVector, Direction input){
+        Snake test(startingHead,tail,startingVector);
+        startingVector.push_back(input);
+        Snake expected(expectedHead,tail,startingVector);
+        EXPECT_TRUE(test.moveHead(input));
+        EXPECT_EQ(test,expected);
+    }
 };
 
 TEST_F(SnakeMoveHeadTest,GoLeft){
-    Coordinate expectedHead(1,1);
-    Coordinate startingHead(2,2);
+    Coordinate startingHead(1,1);
     Coordinate tail(1,1);
+    Coordinate expectedHead(1,0);
     Direction direction = Left;
     ConstrainedVector<Direction,ledNums> startingVector{Left};
 
-
-    Snake test(startingHead,tail,startingVector);
-    startingVector.push_back(direction);
-    Snake expected(expectedHead,tail,startingVector);
-    EXPECT_TRUE(test.moveHead(direction));
-    EXPECT_EQ(test,expected);
+    moveHeadTest(startingHead,expectedHead,tail,startingVector,direction);
 }
 
+TEST_F(SnakeMoveHeadTest,GoUp){
+    Coordinate startingHead(4,5);
+    Coordinate tail(4,5);
+    Coordinate expectedHead(3,5);
+    Direction direction = Up;
+    ConstrainedVector<Direction,ledNums> startingVector{Left};
+
+    moveHeadTest(startingHead,expectedHead,tail,startingVector,direction);
+}
+
+TEST_F(SnakeMoveHeadTest,GoRight){
+    Coordinate startingHead(2,3);
+    Coordinate tail(2,3);
+    Coordinate expectedHead(2,4);
+    Direction direction = Right;
+    ConstrainedVector<Direction,ledNums> startingVector{Right};
+
+    moveHeadTest(startingHead,expectedHead,tail,startingVector,direction);
+}
+
+TEST_F(SnakeMoveHeadTest,GoDown){
+    Coordinate startingHead(6,7);
+    Coordinate tail(6,7);
+    Coordinate expectedHead(7,7);
+    Direction direction = Down;
+    ConstrainedVector<Direction,ledNums> startingVector{Right};
+
+    moveHeadTest(startingHead,expectedHead,tail,startingVector,direction);
+}
+
+TEST_F(SnakeMoveHeadTest,Size3Node){
+    Coordinate startingHead(2,1);
+    Coordinate tail(3,3);
+    Coordinate expectedHead(2,0);
+    Direction direction = Left;
+    ConstrainedVector<Direction,ledNums> startingVector{Left,Down,Left};
+
+    moveHeadTest(startingHead,expectedHead,tail,startingVector,direction);
+}
+
+TEST_F(SnakeMoveHeadTest,FullNodes){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    Direction direction = Right;
+    ConstrainedVector<Direction,ledNums> startingVector(ledNums,Right);
+
+    Snake test(startingHead,tail,startingVector);
+    EXPECT_FALSE(test.moveHead(direction));
+}
+
+TEST(SnakeMoveTailTest,SingleNode){
+
+}
+
+TEST(SnakeMoveTailTest,DoubleNode){
+
+}
+
+TEST(SnakeMoveTailTest,EmptyVector){
+
+}
