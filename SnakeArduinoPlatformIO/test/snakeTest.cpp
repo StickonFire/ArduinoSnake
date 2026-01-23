@@ -22,14 +22,12 @@ TEST(SnakeConstuctorTest,SnakeHeadOnlyConstructor){
 }
 
 TEST(SnakeConstructorTest,SnakeFullConstructor){
-    Direction expectedDirection = Left;
     Coordinate expectedHeadPosition(1,2);
     Coordinate expectedTailPosition(1,2);
     ConstrainedVector<Direction,ledNums> expectedDirections(1,Left);
 
-    Snake test(expectedDirection,expectedHeadPosition,expectedTailPosition,expectedDirections);
+    Snake test(expectedHeadPosition,expectedTailPosition,expectedDirections);
 
-    EXPECT_EQ(test.currentDirection,expectedDirection);
     EXPECT_EQ(test.headPosition,expectedHeadPosition);
     EXPECT_EQ(test.tailPosition,expectedTailPosition);
     EXPECT_EQ(test.nodeDirection,expectedDirections);
@@ -41,8 +39,8 @@ TEST(SnakeEqualityTest,Equals){
     Coordinate expectedTailPosition(1,2);
     ConstrainedVector<Direction,ledNums> expectedDirections(1,Left);
 
-    Snake test(expectedDirection,expectedHeadPosition,expectedTailPosition,expectedDirections);
-    Snake shouldEqual(expectedDirection,expectedHeadPosition,expectedTailPosition,expectedDirections);
+    Snake test(expectedHeadPosition,expectedTailPosition,expectedDirections);
+    Snake shouldEqual(expectedHeadPosition,expectedTailPosition,expectedDirections);
     EXPECT_EQ(test,shouldEqual);
 }
 
@@ -56,15 +54,13 @@ TEST(SnakeEqualityTest,CycleUnequal){
     ConstrainedVector<Direction,ledNums> expectedDirections(1,Left);
     ConstrainedVector<Direction,ledNums> wrongDirections(1,Right);
 
-    Snake test(expectedDirection,expectedHeadPosition,expectedTailPosition,expectedDirections);
-    Snake check(expectedDirection,expectedHeadPosition,expectedTailPosition,expectedDirections);
+    Snake test(expectedHeadPosition,expectedTailPosition,expectedDirections);
+    Snake check(expectedHeadPosition,expectedTailPosition,expectedDirections);
     EXPECT_EQ(test,check);
-    check = Snake(wrongDirection,expectedHeadPosition,expectedTailPosition,expectedDirections);
-    EXPECT_FALSE(test == check) << "Unequal Direction but equality returned true.";
-    check = Snake(expectedDirection,wrongHead,expectedTailPosition,expectedDirections);
+    check = Snake(wrongHead,expectedTailPosition,expectedDirections);
     EXPECT_FALSE(test == check) << "Unequal head but equality returned true.";
-    check = Snake(expectedDirection,expectedHeadPosition,wrongTail,expectedDirections);
+    check = Snake(expectedHeadPosition,wrongTail,expectedDirections);
     EXPECT_FALSE(test == check) << "Unequal tail but equality returned true.";
-    check = Snake(expectedDirection,expectedHeadPosition,expectedTailPosition,wrongDirections);
+    check = Snake(expectedHeadPosition,expectedTailPosition,wrongDirections);
     EXPECT_FALSE(test == check) << "Unequal vector of directions but equality returned true.";
 }

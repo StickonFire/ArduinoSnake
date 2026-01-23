@@ -45,12 +45,11 @@ bool Coordinate::operator==(const Coordinate& other) const{
 
 Snake::Snake(Direction direction,Coordinate headPosition): currentDirection(direction), headPosition(headPosition), tailPosition(headPosition), nodeDirection{direction} { }
 
-Snake::Snake(Direction currentDirection, Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection):
+Snake::Snake(Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection):
 	currentDirection(currentDirection), headPosition(headPosition), tailPosition(tailPosition), nodeDirection{nodeDirection} { }
 
 bool Snake::operator==(const Snake& other) const {
-    return this->currentDirection == other.currentDirection
-        && this->headPosition == other.headPosition
+    return this->headPosition == other.headPosition
 		&& this->tailPosition == other.tailPosition
 		&& this->nodeDirection == other.nodeDirection;
 }

@@ -28,7 +28,7 @@ struct Snake {
     ConstrainedVector<Direction,ledNums> nodeDirection;
 
     Snake(Direction currentDirection, Coordinate headPosition);
-    Snake(Direction currentDirection, Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection);
+    Snake(Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection);
     /**
      * Move the headPostion in the direction provided, then pushes nextDirection to nodeDirection.
      */
@@ -38,6 +38,8 @@ struct Snake {
      */
     bool moveTail();
     bool operator==(const Snake& other) const;
+
+    Direction headDirection();
 };
 
 class SnakeModel {
