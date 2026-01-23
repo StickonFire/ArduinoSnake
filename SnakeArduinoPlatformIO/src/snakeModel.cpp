@@ -43,7 +43,10 @@ bool Coordinate::operator==(const Coordinate& other) const{
 		&& this->y == other.y;
 }
 
-Snake::Snake(Direction direction,Coordinate headPosition): currentDirection(direction), headPosition(headPosition) { }
+Snake::Snake(Direction direction,Coordinate headPosition): currentDirection(direction), headPosition(headPosition), tailPosition(headPosition), nodeDirection{direction} { }
+
+Snake::Snake(Direction currentDirection, Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection):
+	currentDirection(currentDirection), headPosition(headPosition), tailPosition(tailPosition), nodeDirection{nodeDirection} { }
 
 bool Snake::operator==(const Snake& other) const {
     return this->currentDirection == other.currentDirection
