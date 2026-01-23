@@ -71,7 +71,10 @@ bool Snake::operator==(const Snake& other) const {
 }
 
 bool Snake::moveHead(Direction next){
-	return false;
+	if(!(this->nodeDirection.push_back(next)))
+		return false;
+	this->headPosition = Coordinate(this->headPosition,next);
+	return true;
 }
 
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused): 
