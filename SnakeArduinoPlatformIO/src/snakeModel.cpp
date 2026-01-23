@@ -47,7 +47,9 @@ Snake::Snake(Direction direction,Coordinate headPosition): currentDirection(dire
 
 bool Snake::operator==(const Snake& other) const {
     return this->currentDirection == other.currentDirection
-        && this->headPosition == other.headPosition;
+        && this->headPosition == other.headPosition
+		&& this->tailPosition == other.tailPosition
+		&& this->nodeDirection == other.nodeDirection;
 }
 
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused): 
