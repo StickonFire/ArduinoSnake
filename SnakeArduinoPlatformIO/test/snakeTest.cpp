@@ -64,3 +64,25 @@ TEST(SnakeEqualityTest,CycleUnequal){
     check = Snake(expectedHeadPosition,expectedTailPosition,wrongDirections);
     EXPECT_FALSE(test == check) << "Unequal vector of directions but equality returned true.";
 }
+
+class SnakeMoveHeadTest : public testing::Test {
+    //Coordinate startingHead;
+    //Coordinate expectedHead;
+
+};
+
+TEST_F(SnakeMoveHeadTest,GoLeft){
+    Coordinate expectedHead(1,1);
+    Coordinate startingHead(2,2);
+    Coordinate tail(1,1);
+    Direction direction = Left;
+    ConstrainedVector<Direction,ledNums> startingVector{Left};
+
+
+    Snake test(startingHead,tail,startingVector);
+    startingVector.push_back(direction);
+    Snake expected(expectedHead,tail,startingVector);
+    EXPECT_TRUE(test.moveHead(direction));
+    EXPECT_EQ(test,expected);
+}
+
