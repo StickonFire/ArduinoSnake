@@ -78,7 +78,11 @@ bool Snake::moveHead(Direction next){
 }
 
 bool Snake::moveTail(){
-	return false;
+	if(this->nodeDirection.size() < 2)
+		return false;
+	this->nodeDirection.pop_front();
+	this->tailPosition = Coordinate(this->tailPosition,nodeDirection[0]);
+	return true;
 }
 
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused): 
