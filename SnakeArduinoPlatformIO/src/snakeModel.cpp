@@ -130,20 +130,7 @@ void SnakeModel::advanceState(Command userInput){
 	}
 	if(!paused){
 		player.currentDirection = changeDirection(player.currentDirection,userInput);
-		Coordinate nextPosition(player.headPosition);
-		switch(player.currentDirection){
-			case Up:
-				nextPosition.x--;
-				break;
-			case Right:
-				nextPosition.y++;
-				break;
-			case Down:
-				nextPosition.x++;
-				break;
-			case Left:
-				nextPosition.y--;
-		}
+		Coordinate nextPosition(player.headPosition,player.currentDirection);
 
 		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0)
 			return;
