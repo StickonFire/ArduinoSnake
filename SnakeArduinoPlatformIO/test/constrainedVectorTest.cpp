@@ -151,7 +151,7 @@ TEST_F(ConstrainedVectorPushTest,Full){
 
 TEST_F(ConstrainedVectorPushTest,EmptyOverflow){
     ConstrainedVector<MapTileState,4> test(0,{Empty,Empty,Empty,Empty},3,3);
-    ConstrainedVector<MapTileState,4> expected(1,{Empty,Empty,Empty,Empty},3,0);
+    ConstrainedVector<MapTileState,4> expected(1,{Empty,Empty,Empty,SnakeTile},3,0);
     pushTest(test,expected,SnakeTile,"Push fails when the ConstrainedVector's Empty and overflows");
 }
 

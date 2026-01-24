@@ -55,7 +55,7 @@ class ConstrainedVector{
         if(this->width != other.width || this->front != other.front || this->back != other.back)
             return false;
         for(int i = 0; i < this->width; i++){
-            if(!(this->array[i] == other.array[i]))
+            if(!((*this)[i] == other[i]))
                 return false;
         }
         return true;
