@@ -136,14 +136,80 @@ TEST_F(SnakeMoveHeadTest,FullNodes){
     EXPECT_FALSE(test.moveHead(direction));
 }
 
-TEST(SnakeMoveTailTest,SingleNode){
+class SnakeMoveTailTest : public testing::Test {
+    protected:
+    void testTail(Coordinate startingHead, Coordinate tail, Coordinate expectedTail, ConstrainedVector<Direction,ledNums> startingVector){
+        Snake test(startingHead,tail,startingVector);
+        startingVector.pop_front();
+        Snake check(startingHead,expectedTail,startingVector);
+        EXPECT_TRUE(test.moveTail());
+        EXPECT_EQ(test,check);
+    }
+};
 
+TEST_F(SnakeMoveTailTest,LastLeft){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    Coordinate expectedTail(1,0);
+    ConstrainedVector<Direction,ledNums> startingVector(ledNums,Left);
+
+    testTail(startingHead,tail,expectedTail,startingVector);
 }
 
-TEST(SnakeMoveTailTest,DoubleNode){
+TEST_F(SnakeMoveTailTest,LastUp){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    Coordinate expectedTail(0,1);
+    ConstrainedVector<Direction,ledNums> startingVector(ledNums,Up);
 
+    testTail(startingHead,tail,expectedTail,startingVector);
 }
 
-TEST(SnakeMoveTailTest,EmptyVector){
+TEST_F(SnakeMoveTailTest,LastRight){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    Coordinate expectedTail(1,2);
+    ConstrainedVector<Direction,ledNums> startingVector(ledNums,Right);
 
+    testTail(startingHead,tail,expectedTail,startingVector);
+}
+
+TEST_F(SnakeMoveTailTest,LastDown){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    Coordinate expectedTail(2,1);
+    ConstrainedVector<Direction,ledNums> startingVector(ledNums,Down);
+
+    testTail(startingHead,tail,expectedTail,startingVector);
+}
+
+//Tests both two nodes and an offset vector.
+TEST_F(SnakeMoveTailTest,TwoNode){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    Coordinate expectedTail(2,1);
+    std::array<Direction,ledNums> innerArray;
+    innerArray[10] = Right;
+    innerArray[11] = Down;
+    ConstrainedVector<Direction,ledNums> startingVector(2,innerArray,10,12);
+
+    testTail(startingHead,tail,expectedTail,startingVector);
+}
+
+TEST_F(SnakeMoveTailTest,OneNode){
+    Coordinate startingHead(1,1);
+    Coordinate tail(1,1);
+    std::array<Direction,ledNums> innerArray;
+    innerArray[10] = Down;
+    ConstrainedVector<Direction,ledNums> startingVector(1,innerArray,10,11);
+
+    Snake test(startingHead,tail,startingVector);
+    EXPECT_FALSE(test.moveTail());
+}
+
+TEST_F(SnakeMoveTailTest,EmptyVector){
+    Coordinate position(1,1);
+    ConstrainedVector<Direction,ledNums> startingVector(0,Left);
+    Snake test(position,position,startingVector);
+    EXPECT_FALSE(test.moveTail());
 }
