@@ -84,6 +84,28 @@ class SnakeModelAdvanceStateTest : public testing::Test {
         for(std::string row: mapRepresentation)
             result += std::string("[") + row + "]\n";
         result += std::string("}\n");
+        result += "Snake Front: [" + std::to_string(player.headPosition.x) + "," + std::to_string(player.headPosition.y) + "]\n";
+        result += "Snake Back: [" + std::to_string(player.tailPosition.x) + "," + std::to_string(player.tailPosition.y) + "]\n";
+        result += "Node Directions: [";
+        for(int i = 0; i < player.nodeDirection.size(); i++){
+            switch(player.nodeDirection[i]){
+                case Left:
+                    result += "L";
+                    break;
+                case Up:
+                    result += "U";
+                    break;
+                case Right:
+                    result += "R";
+                    break;
+                case Down:
+                    result += "D";
+                    break;
+                default:
+                    result += "N";
+            }
+        }
+        result += "]\n";
         result += "Paused: ";
         if(toDescribe.isPaused())
             result += "True\n";
@@ -180,8 +202,14 @@ TEST_F(SnakeModelAdvanceStateTest,PauseTest){
         testSnakeModelEquality(expectedModel,messageStart + "Command: Pause");
 
         testModel.advanceState(Straight);
+        //TODO: Modify this nextMap to also set the starts and ends.
         ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> nextMap{ConstrainedVector<MapTileState,ledCols>(3,Empty)};
         nextMap[0][i] = SnakeTile;
+        
+        std::array<Direction,ledNums> expectedInner;
+        expectedInner[i] = Right;
+        ConstrainedVector<Direction,ledNums> expectedVector(1,expectedInner,(i+1),i);
+        Snake expectedSnake(Coordinate(0,i),Coordinate(0,i),expectedVector);
         expectedModel = SnakeModel(nextMap,Coordinate(0,i),Right,false);
         testSnakeModelEquality(expectedModel,messageStart + "Moving to Next State");
     }
