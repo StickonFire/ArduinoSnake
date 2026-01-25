@@ -202,15 +202,14 @@ TEST_F(SnakeModelAdvanceStateTest,PauseTest){
         testSnakeModelEquality(expectedModel,messageStart + "Command: Pause");
 
         testModel.advanceState(Straight);
-        //TODO: Modify this nextMap to also set the starts and ends.
         ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> nextMap{ConstrainedVector<MapTileState,ledCols>(3,Empty)};
         nextMap[0][i] = SnakeTile;
         
         std::array<Direction,ledNums> expectedInner;
         expectedInner[i] = Right;
-        ConstrainedVector<Direction,ledNums> expectedVector(1,expectedInner,(i+1),i);
+        ConstrainedVector<Direction,ledNums> expectedVector(1,expectedInner,i,(i+1));
         Snake expectedSnake(Coordinate(0,i),Coordinate(0,i),expectedVector);
-        expectedModel = SnakeModel(nextMap,Coordinate(0,i),Right,false);
+        expectedModel = SnakeModel(nextMap,expectedSnake,false);
         testSnakeModelEquality(expectedModel,messageStart + "Moving to Next State");
     }
 }
