@@ -94,6 +94,8 @@ SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>
   map(map), player(playerStartDirection,startPosition), paused(paused) { 
 }
 
+SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused): map(map), player(player), paused(paused) { }
+
 bool SnakeModel::operator==(const SnakeModel& other) const {
     return this->player == other.player
         && this->map == other.map
@@ -135,10 +137,11 @@ void SnakeModel::advanceState(Command userInput){
 		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0)
 			return;
 		
-		map[player.headPosition.x][player.headPosition.y] = Empty;
+		map[player.tailPosition.x][player.tailPosition.y] = Empty;
 		map[nextPosition.x][nextPosition.y] = SnakeTile;
 		
-		player.headPosition = nextPosition;
+		player.moveHead(player.currentDirection);
+		player.moveTail();
 	}
 }
 
