@@ -14,6 +14,20 @@ std::string snakeModelToString(SnakeModel& toDescribe){
     std::string result("SnakeModel: {");
     ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map = toDescribe.getMap();
     std::vector<std::string> mapRepresentation(map.size(),std::string(map[0].size(),' '));
+    for(int width = 0; width < map.size(); width++){
+        for(int height = 0; height < map[0].size(); height++){
+            switch(map[width][height]){
+                case Empty:
+                    mapRepresentation[width][height] = ' ';
+                    break;
+                case SnakeTile:
+                    mapRepresentation[width][height] = 'S';
+                    break;
+                default:
+                    mapRepresentation[width][height] = 'N';
+            }
+        }
+    }
     Snake player(toDescribe.getPlayer());
     Coordinate headPosition(player.headPosition);
     char snakeDesign;
