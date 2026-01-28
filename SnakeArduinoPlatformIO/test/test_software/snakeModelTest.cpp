@@ -52,67 +52,67 @@ TEST(SnakeModelTest,ChangeDirectionTest){
 const std::array<Command,3> commandList{LeftTurn,RightTurn,Pause};
 const std::array<Direction,4> directionList{Up,Right,Down,Left};
 
+std::string snakeModelToString(SnakeModel& toDescribe){
+    std::string result("SnakeModel: {");
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map = toDescribe.getMap();
+    std::vector<std::string> mapRepresentation(map.size(),std::string(map[0].size(),' '));
+    Snake player(toDescribe.getPlayer());
+    Coordinate headPosition(player.headPosition);
+    char snakeDesign;
+    switch(player.currentDirection){
+        case Up:
+            snakeDesign = 'v';
+            break;
+        case Right:
+            snakeDesign = '<';
+            break;
+        case Down:
+            snakeDesign = 'n';
+            break;
+        case Left:
+            snakeDesign = '>';
+    }
+    mapRepresentation[headPosition.x][headPosition.y] = snakeDesign;
+    result += "Map: {\n";
+    for(std::string row: mapRepresentation)
+        result += std::string("[") + row + "]\n";
+    result += std::string("}\n");
+    result += "Snake Front: [" + std::to_string(player.headPosition.x) + "," + std::to_string(player.headPosition.y) + "]\n";
+    result += "Snake Back: [" + std::to_string(player.tailPosition.x) + "," + std::to_string(player.tailPosition.y) + "]\n";
+    result += "Node Directions: [";
+    for(int i = 0; i < player.nodeDirection.size(); i++){
+        switch(player.nodeDirection[i]){
+            case Left:
+                result += "L";
+                break;
+            case Up:
+                result += "U";
+                break;
+            case Right:
+                result += "R";
+                break;
+            case Down:
+                result += "D";
+                break;
+            default:
+                result += "N";
+        }
+    }
+    result += "]\n";
+    result += "Paused: ";
+    if(toDescribe.isPaused())
+        result += "True\n";
+    else 
+        result += "False\n";
+    return result + "}";
+}
+
 class SnakeModelAdvanceStateTest : public testing::Test {
 
     protected:
     SnakeModel testModel;
 
     SnakeModelAdvanceStateTest(): testModel(1,1,Coordinate(0,0),Up) { }
-
-    std::string snakeModelToString(SnakeModel& toDescribe){
-        std::string result("SnakeModel: {");
-        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map = toDescribe.getMap();
-        std::vector<std::string> mapRepresentation(map.size(),std::string(map[0].size(),' '));
-        Snake player(toDescribe.getPlayer());
-        Coordinate headPosition(player.headPosition);
-        char snakeDesign;
-        switch(player.currentDirection){
-            case Up:
-                snakeDesign = 'v';
-                break;
-            case Right:
-                snakeDesign = '<';
-                break;
-            case Down:
-                snakeDesign = 'n';
-                break;
-            case Left:
-                snakeDesign = '>';
-        }
-        mapRepresentation[headPosition.x][headPosition.y] = snakeDesign;
-        result += "Map: {\n";
-        for(std::string row: mapRepresentation)
-            result += std::string("[") + row + "]\n";
-        result += std::string("}\n");
-        result += "Snake Front: [" + std::to_string(player.headPosition.x) + "," + std::to_string(player.headPosition.y) + "]\n";
-        result += "Snake Back: [" + std::to_string(player.tailPosition.x) + "," + std::to_string(player.tailPosition.y) + "]\n";
-        result += "Node Directions: [";
-        for(int i = 0; i < player.nodeDirection.size(); i++){
-            switch(player.nodeDirection[i]){
-                case Left:
-                    result += "L";
-                    break;
-                case Up:
-                    result += "U";
-                    break;
-                case Right:
-                    result += "R";
-                    break;
-                case Down:
-                    result += "D";
-                    break;
-                default:
-                    result += "N";
-            }
-        }
-        result += "]\n";
-        result += "Paused: ";
-        if(toDescribe.isPaused())
-            result += "True\n";
-        else 
-            result += "False\n";
-        return result + "}";
-    }
 
     void checkKilled(){
 
