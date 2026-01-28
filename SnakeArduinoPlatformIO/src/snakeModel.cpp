@@ -131,8 +131,8 @@ void SnakeModel::advanceState(Command userInput){
 		return;
 	}
 	if(!paused){
-		player.currentDirection = changeDirection(player.currentDirection,userInput);
-		Coordinate nextPosition(player.headPosition,player.currentDirection);
+		Direction nextDirection = changeDirection(player.nodeDirection[player.nodeDirection.size()-1],userInput);
+		Coordinate nextPosition(player.headPosition,nextDirection);
 
 		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0)
 			return;
@@ -140,7 +140,7 @@ void SnakeModel::advanceState(Command userInput){
 		map[player.tailPosition.x][player.tailPosition.y] = Empty;
 		map[nextPosition.x][nextPosition.y] = SnakeTile;
 		
-		player.moveHead(player.currentDirection);
+		player.moveHead(nextDirection);
 		player.moveTail();
 	}
 }
