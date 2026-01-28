@@ -233,3 +233,28 @@ TEST_F(SnakeModelAdvanceStateTest,MovementTest){
         movementTest(testDirection);
     }
 }
+
+TEST_F(SnakeModelAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap{
+        {Empty,Empty,Empty},
+        {SnakeTile,SnakeTile,Empty},
+        {Empty,Empty,Empty}
+    };
+    Coordinate startHeadPosition(1,1);
+    Coordinate startTailPosition(1,0);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Right};
+    Snake startingSnake(startHeadPosition,startTailPosition, startNodeDirection);
+    testModel = SnakeModel(startingMap,startingSnake,false);
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endMap{
+        {Empty,SnakeTile,Empty},
+        {Empty,SnakeTile,Empty},
+        {Empty,Empty,Empty}
+    };
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(1,1);
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Right,Up},1);
+    Snake endSnake(endHeadPosition,endTailPosition, endNodeDirection);
+    SnakeModel expected(endMap,endSnake,false);
+    testModel.advanceState(LeftTurn);
+    testSnakeModelEquality(expected,std::string("Test Failed, Head turned left, tail turned left."));
+}
