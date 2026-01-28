@@ -30,10 +30,14 @@ class ConstrainedVector{
         }
     }
 
-    ConstrainedVector(std::initializer_list<N> l): width(l.size()), front(0),back(l.size()) {
+    ConstrainedVector(std::initializer_list<N> l, int front=0): width(l.size()), front(front),back((front+l.size())%maxSize) {
         if(l.size() > maxSize)
             throw std::invalid_argument("Initializer list size greater than the maxSize of the ConstrainedVector");
-        std::copy(l.begin(),l.end(),array.begin());
+        int modifyPosition = front;
+        for(N value: l){
+            array[(modifyPosition)%maxSize] = value;
+            modifyPosition++;
+        }
     }
 
     ConstrainedVector(int width, std::array<N,maxSize> array, int front, int back): width(width), array(array), front(front),back(back) { }

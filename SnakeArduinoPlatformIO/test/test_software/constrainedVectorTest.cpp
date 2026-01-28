@@ -62,7 +62,7 @@ TEST(ConstrainedVectorInitializerTest,UnderConstraint){
 
 TEST(ConstrainedVectorInitializerTest,EqualsConstraint){
     ConstrainedVector<MapTileState,5> test{SnakeTile,Empty,SnakeTile,Empty,SnakeTile};
-    ConstrainedVector<MapTileState,5> expected(5,std::array<MapTileState,5>{SnakeTile,Empty,SnakeTile,Empty,SnakeTile},0,5);
+    ConstrainedVector<MapTileState,5> expected(5,std::array<MapTileState,5>{SnakeTile,Empty,SnakeTile,Empty,SnakeTile},0,0);
     EXPECT_EQ(test,expected);
 }
 
@@ -74,6 +74,12 @@ TEST(ConstrainedVectorInitializerTest,OverConstraint){
         exceptionThrown = true;
     }
     EXPECT_TRUE(exceptionThrown);
+}
+
+TEST(ConstrainedVectorInitializerTest,Offset){
+    ConstrainedVector<MapTileState,5> test({SnakeTile,Empty,SnakeTile,Empty},1);
+    ConstrainedVector<MapTileState,5> expected(4,std::array<MapTileState,5>{Empty,SnakeTile,Empty,SnakeTile,Empty},1,0);
+    EXPECT_EQ(test,expected);
 }
 
 TEST(ConstrainedVectorGetOperatorTest,FirstElement){
