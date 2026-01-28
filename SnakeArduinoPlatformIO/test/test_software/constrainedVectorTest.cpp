@@ -39,7 +39,7 @@ TEST(ConstrainedVectorFillConstructorTest,size0){
 
 TEST(ConstrainedVectorFillConstructorTest,sizeEqualsCapacity){
     ConstrainedVector<MapTileState,4> test(4,SnakeTile);
-    ConstrainedVector<MapTileState,4> expected(4,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile},0,4);
+    ConstrainedVector<MapTileState,4> expected(4,std::array<MapTileState,4>{SnakeTile,SnakeTile,SnakeTile,SnakeTile},0,0);
     EXPECT_EQ(test,expected);
     EXPECT_EQ(test.size(),4);
 }
