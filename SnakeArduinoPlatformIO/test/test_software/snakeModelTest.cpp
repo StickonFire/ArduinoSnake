@@ -234,27 +234,43 @@ TEST_F(SnakeModelAdvanceStateTest,MovementTest){
     }
 }
 
-TEST_F(SnakeModelAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
-    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap{
-        {Empty,Empty,Empty},
-        {SnakeTile,SnakeTile,Empty},
-        {Empty,Empty,Empty}
+class SnakeModelDoubleNodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
+
+    protected:
+    struct DoubleNodeMapDescription{
+        Coordinate head;
+        Coordinate tail;
+        ConstrainedVector<Direction,ledNums> directions;
     };
+
+    void doubleNodeTest(DoubleNodeMapDescription start, DoubleNodeMapDescription end, Command command, std::string headDirection, std::string tailDirection){
+        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap(3,ConstrainedVector<MapTileState,ledCols>(3,Empty));
+        startingMap[start.head.x][start.head.y] = SnakeTile;
+        startingMap[start.tail.x][start.tail.y] = SnakeTile;
+        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap(3,ConstrainedVector<MapTileState,ledCols>(3,Empty));
+        endingMap[end.head.x][end.head.y] = SnakeTile;
+        endingMap[end.tail.x][end.tail.y] = SnakeTile;
+
+        Snake startingSnake(start.head,start.tail,start.directions);
+        Snake endingSnake(end.head,end.tail,end.directions);
+
+        testModel = SnakeModel(startingMap,startingSnake,false);
+        SnakeModel expectedModel(endingMap,endingSnake,false);
+
+        testModel.advanceState(command);
+        testSnakeModelEquality(expectedModel,std::string("Double Node Test failed, head turned ") + headDirection + std::string(". Tail turned ") + tailDirection);
+    }
+};
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
     Coordinate startHeadPosition(1,1);
     Coordinate startTailPosition(1,0);
-    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Right};
-    Snake startingSnake(startHeadPosition,startTailPosition, startNodeDirection);
-    testModel = SnakeModel(startingMap,startingSnake,false);
-    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endMap{
-        {Empty,SnakeTile,Empty},
-        {Empty,SnakeTile,Empty},
-        {Empty,Empty,Empty}
-    };
     Coordinate endHeadPosition(0,1);
     Coordinate endTailPosition(1,1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Right};
     ConstrainedVector<Direction,ledNums> endNodeDirection({Right,Up},1);
-    Snake endSnake(endHeadPosition,endTailPosition, endNodeDirection);
-    SnakeModel expected(endMap,endSnake,false);
-    testModel.advanceState(LeftTurn);
-    testSnakeModelEquality(expected,std::string("Test Failed, Head turned left, tail turned left."));
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,LeftTurn,"Left","Left");
 }
