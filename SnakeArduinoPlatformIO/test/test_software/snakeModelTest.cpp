@@ -274,3 +274,108 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
     DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
     doubleNodeTest(start,end,LeftTurn,"Left","Left");
 }
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadLeft){
+    Coordinate startHeadPosition(0,1);
+    Coordinate startTailPosition(1,1);
+    Coordinate endHeadPosition(0,0);
+    Coordinate endTailPosition(0,1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up,Up};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Up,Left},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,LeftTurn,"Left","Straight");
+}
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadLeft){
+    Coordinate startHeadPosition(2,1);
+    Coordinate startTailPosition(2,0);
+    Coordinate endHeadPosition(1,1);
+    Coordinate endTailPosition(2,1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up,Right};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Right,Up},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,LeftTurn,"Left","Right");
+}
+
+//TODO: Fix all these tests.
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadStraight){
+    Coordinate startHeadPosition(1,1);
+    Coordinate startTailPosition(2,1);
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(1,1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Right,Up};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Up,Up},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,Straight,"Straight","Left");
+}
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadStraight){
+    Coordinate startHeadPosition(1,1);
+    Coordinate startTailPosition(1,2);
+    Coordinate endHeadPosition(1,0);
+    Coordinate endTailPosition(1,1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Left,Left};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Left,Left},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,Straight,"Straight","Straight");
+}
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadStraight){
+    Coordinate startHeadPosition(1,2);
+    Coordinate startTailPosition(0,2);
+    Coordinate endHeadPosition(2,2);
+    Coordinate endTailPosition(1,2);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Right,Down};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Down,Down},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,Straight,"Straight","Right");
+}
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadRight){
+    Coordinate startHeadPosition(1,1);
+    Coordinate startTailPosition(1,2);
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(1,1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up,Left};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Left,Up},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,RightTurn,"Right","Left");
+}
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadRight){
+    Coordinate startHeadPosition(2,2);
+    Coordinate startTailPosition(1,2);
+    Coordinate endHeadPosition(2,1);
+    Coordinate endTailPosition(2,2);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Down};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Down,Left},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,RightTurn,"Right","Straight");
+}
+
+TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadRight){
+    Coordinate startHeadPosition(2,0);
+    Coordinate startTailPosition(2,1);
+    Coordinate endHeadPosition(1,0);
+    Coordinate endTailPosition(2,0);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Left};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Left,Up},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    doubleNodeTest(start,end,RightTurn,"Right","Right");
+}
