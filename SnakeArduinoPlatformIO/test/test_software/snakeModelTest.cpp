@@ -243,13 +243,8 @@ class SnakeModelMultinodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
         ConstrainedVector<Direction,ledNums> directions;
     };
 
-    void doubleNodeTest(DoubleNodeMapDescription start, DoubleNodeMapDescription end, Command command, std::string headDirection, std::string tailDirection){
-        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap(3,ConstrainedVector<MapTileState,ledCols>(3,Empty));
-        startingMap[start.head.x][start.head.y] = SnakeTile;
-        startingMap[start.tail.x][start.tail.y] = SnakeTile;
-        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap(3,ConstrainedVector<MapTileState,ledCols>(3,Empty));
-        endingMap[end.head.x][end.head.y] = SnakeTile;
-        endingMap[end.tail.x][end.tail.y] = SnakeTile;
+    void multiNodeTest(DoubleNodeMapDescription start, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap, 
+            DoubleNodeMapDescription end, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap, Command command, std::string message){
 
         Snake startingSnake(start.head,start.tail,start.directions);
         Snake endingSnake(end.head,end.tail,end.directions);
@@ -258,7 +253,19 @@ class SnakeModelMultinodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
         SnakeModel expectedModel(endingMap,endingSnake,false);
 
         testModel.advanceState(command);
-        testSnakeModelEquality(expectedModel,std::string("Double Node Test failed, head turned ") + headDirection + std::string(". Tail turned ") + tailDirection);
+        testSnakeModelEquality(expectedModel,message);
+    }
+
+    void doubleNodeTest(DoubleNodeMapDescription start, DoubleNodeMapDescription end, Command command, std::string headDirection, std::string tailDirection){
+        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap(3,ConstrainedVector<MapTileState,ledCols>(3,Empty));
+        startingMap[start.head.x][start.head.y] = SnakeTile;
+        startingMap[start.tail.x][start.tail.y] = SnakeTile;
+        ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap(3,ConstrainedVector<MapTileState,ledCols>(3,Empty));
+        endingMap[end.head.x][end.head.y] = SnakeTile;
+        endingMap[end.tail.x][end.tail.y] = SnakeTile;
+
+        std::string message = std::string("Double Node Test failed, head turned ") + headDirection + std::string(". Tail turned ") + tailDirection;
+        multiNodeTest(start,startingMap,end,endingMap,command,message);
     }
 };
 
@@ -301,7 +308,6 @@ TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailRightHeadLeft){
     doubleNodeTest(start,end,LeftTurn,"Left","Right");
 }
 
-//TODO: Fix all these tests.
 TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailLeftHeadStraight){
     Coordinate startHeadPosition(1,1);
     Coordinate startTailPosition(2,1);
@@ -388,12 +394,29 @@ TEST_F(SnakeModelMultinodeAdvanceStateTest,SnakeLoops){
     };
     Coordinate startHeadPosition(1,2);
     Coordinate startTailPosition(0,2);
-    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Left};
-    ConstrainedVector<Direction,ledNums> endNodeDirection({Left,Up},1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up,Left,Left,Down,Down,Right,Right,Up};
     Coordinate endHeadPosition(0,2);
     Coordinate endTailPosition(0,1);
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Left,Left,Down,Down,Right,Right,Up,Up},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    multiNodeTest(start,map,end,map,Straight,"Snake Donut Loop Failed");
 }
 
 TEST_F(SnakeModelMultinodeAdvanceStateTest,SnakeFullScreen){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map{
+        {SnakeTile,SnakeTile},
+        {SnakeTile,SnakeTile}
+    };
+    Coordinate startHeadPosition(0,1);
+    Coordinate startTailPosition(0,0);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Left,Down,Right,Up};
+    Coordinate endHeadPosition(0,0);
+    Coordinate endTailPosition(1,0);
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Down,Right,Up,Left},1);
 
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    multiNodeTest(start,map,end,map,LeftTurn,"Snake Full Screen Loop Failed");
 }
