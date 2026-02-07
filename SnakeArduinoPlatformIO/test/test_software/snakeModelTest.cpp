@@ -234,7 +234,7 @@ TEST_F(SnakeModelAdvanceStateTest,MovementTest){
     }
 }
 
-class SnakeModelDoubleNodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
+class SnakeModelMultinodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
 
     protected:
     struct DoubleNodeMapDescription{
@@ -262,7 +262,7 @@ class SnakeModelDoubleNodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
     }
 };
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
     Coordinate startHeadPosition(1,1);
     Coordinate startTailPosition(1,0);
     Coordinate endHeadPosition(0,1);
@@ -275,7 +275,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadLeft){
     doubleNodeTest(start,end,LeftTurn,"Left","Left");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadLeft){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailStraightHeadLeft){
     Coordinate startHeadPosition(0,1);
     Coordinate startTailPosition(1,1);
     Coordinate endHeadPosition(0,0);
@@ -288,7 +288,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadLeft){
     doubleNodeTest(start,end,LeftTurn,"Left","Straight");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadLeft){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailRightHeadLeft){
     Coordinate startHeadPosition(2,1);
     Coordinate startTailPosition(2,0);
     Coordinate endHeadPosition(1,1);
@@ -302,7 +302,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadLeft){
 }
 
 //TODO: Fix all these tests.
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadStraight){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailLeftHeadStraight){
     Coordinate startHeadPosition(1,1);
     Coordinate startTailPosition(2,1);
     Coordinate endHeadPosition(0,1);
@@ -315,7 +315,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadStraight){
     doubleNodeTest(start,end,Straight,"Straight","Left");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadStraight){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailStraightHeadStraight){
     Coordinate startHeadPosition(1,1);
     Coordinate startTailPosition(1,2);
     Coordinate endHeadPosition(1,0);
@@ -328,7 +328,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadStraight){
     doubleNodeTest(start,end,Straight,"Straight","Straight");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadStraight){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailRightHeadStraight){
     Coordinate startHeadPosition(1,2);
     Coordinate startTailPosition(0,2);
     Coordinate endHeadPosition(2,2);
@@ -341,7 +341,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadStraight){
     doubleNodeTest(start,end,Straight,"Straight","Right");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadRight){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailLeftHeadRight){
     Coordinate startHeadPosition(1,1);
     Coordinate startTailPosition(1,2);
     Coordinate endHeadPosition(0,1);
@@ -354,7 +354,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailLeftHeadRight){
     doubleNodeTest(start,end,RightTurn,"Right","Left");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadRight){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailStraightHeadRight){
     Coordinate startHeadPosition(2,2);
     Coordinate startTailPosition(1,2);
     Coordinate endHeadPosition(2,1);
@@ -367,7 +367,7 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailStraightHeadRight){
     doubleNodeTest(start,end,RightTurn,"Right","Straight");
 }
 
-TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadRight){
+TEST_F(SnakeModelMultinodeAdvanceStateTest,DoubleNodeTailRightHeadRight){
     Coordinate startHeadPosition(2,0);
     Coordinate startTailPosition(2,1);
     Coordinate endHeadPosition(1,0);
@@ -378,4 +378,22 @@ TEST_F(SnakeModelDoubleNodeAdvanceStateTest,DoubleNodeTailRightHeadRight){
     DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
     DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
     doubleNodeTest(start,end,RightTurn,"Right","Right");
+}
+
+TEST_F(SnakeModelMultinodeAdvanceStateTest,SnakeLoops){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map{
+        {SnakeTile,SnakeTile,SnakeTile},
+        {SnakeTile,Empty,SnakeTile},
+        {SnakeTile,SnakeTile,SnakeTile}
+    };
+    Coordinate startHeadPosition(1,2);
+    Coordinate startTailPosition(0,2);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Down,Left};
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Left,Up},1);
+    Coordinate endHeadPosition(0,2);
+    Coordinate endTailPosition(0,1);
+}
+
+TEST_F(SnakeModelMultinodeAdvanceStateTest,SnakeFullScreen){
+
 }
