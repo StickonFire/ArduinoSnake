@@ -85,21 +85,22 @@ bool Snake::moveTail(){
 	return true;
 }
 
-SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused): 
-  map(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>(mapWidth,ConstrainedVector<MapTileState,ledCols>(mapHeight,Empty))), player(playerStartDirection, startPosition), paused(paused) {
+SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed): 
+  map(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>(mapWidth,ConstrainedVector<MapTileState,ledCols>(mapHeight,Empty))), player(playerStartDirection, startPosition), paused(paused), killed(killed) {
     this->map[startPosition.x][startPosition.y] = SnakeTile;
 }
 
-SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused):
-  map(map), player(playerStartDirection,startPosition), paused(paused) { 
+SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed):
+  map(map), player(playerStartDirection,startPosition), paused(paused), killed(killed) { 
 }
 
-SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused): map(map), player(player), paused(paused) { }
+SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused, bool killed): map(map), player(player), paused(paused), killed(killed) { }
 
 bool SnakeModel::operator==(const SnakeModel& other) const {
     return this->player == other.player
         && this->map == other.map
-        && this->paused == other.paused;
+        && this->paused == other.paused
+		&& this->killed == other.killed;
 }
 
 Direction changeDirection(Direction initial, Command input){

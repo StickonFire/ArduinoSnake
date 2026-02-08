@@ -223,7 +223,7 @@ TEST_F(SnakeModelAdvanceStateTest,PauseTest){
         expectedInner[i] = Right;
         ConstrainedVector<Direction,ledNums> expectedVector(1,expectedInner,i,(i+1));
         Snake expectedSnake(Coordinate(0,i),Coordinate(0,i),expectedVector);
-        expectedModel = SnakeModel(nextMap,expectedSnake,false);
+        expectedModel = SnakeModel(nextMap,expectedSnake,false,false);
         testSnakeModelEquality(expectedModel,messageStart + "Moving to Next State");
     }
 }
@@ -249,8 +249,8 @@ class SnakeModelMultinodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
         Snake startingSnake(start.head,start.tail,start.directions);
         Snake endingSnake(end.head,end.tail,end.directions);
 
-        testModel = SnakeModel(startingMap,startingSnake,false);
-        SnakeModel expectedModel(endingMap,endingSnake,false);
+        testModel = SnakeModel(startingMap,startingSnake,false,false);
+        SnakeModel expectedModel(endingMap,endingSnake,false,false);
 
         testModel.advanceState(command);
         testSnakeModelEquality(expectedModel,message);

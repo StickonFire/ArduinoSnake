@@ -46,12 +46,13 @@ struct Snake {
 class SnakeModel {
     Snake player;
     bool paused;
+    bool killed;
     ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map;
 
     public:
-    SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused = false);
-    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused);
-    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused);
+    SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused = false, bool killed = false);
+    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed = false);
+    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused, bool killed);
 
     bool operator==(const SnakeModel& other) const;
 
