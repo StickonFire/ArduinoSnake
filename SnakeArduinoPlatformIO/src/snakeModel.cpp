@@ -135,8 +135,10 @@ void SnakeModel::advanceState(Command userInput){
 		Direction nextDirection = changeDirection(player.nodeDirection[player.nodeDirection.size()-1],userInput);
 		Coordinate nextPosition(player.headPosition,nextDirection);
 
-		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0)
+		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0){
+			killed = true;
 			return;
+		}
 		
 		map[player.tailPosition.x][player.tailPosition.y] = Empty;
 		map[nextPosition.x][nextPosition.y] = SnakeTile;
@@ -160,4 +162,12 @@ void SnakeModel::togglePause(){
 
 bool SnakeModel::isPaused() {
 	return this->paused;
+}
+
+void SnakeModel::setKilled(bool killed){
+	this->killed = killed;
+}
+
+bool SnakeModel::isKilled() {
+	return this->killed;
 }

@@ -67,6 +67,8 @@ class SnakeModel {
     Snake getPlayer();
     void togglePause();
     bool isPaused();
+    void setKilled(bool killed);
+    bool isKilled();
 };
 
 #endif

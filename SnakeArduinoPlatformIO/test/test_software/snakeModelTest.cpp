@@ -144,14 +144,15 @@ class SnakeModelAdvanceStateTest : public testing::Test {
         for(Command input: commandList){
             testModel = SnakeModel(1,1,Coordinate(0,0),startDirection);
             testModel.advanceState(input);
+            SnakeModel expectedModel(1,1,Coordinate(0,0),startDirection);
             if(input == Pause){
-                SnakeModel expectedModel(1,1,Coordinate(0,0),startDirection);
                 expectedModel.togglePause();
-                testSnakeModelEquality(expectedModel);
                 EXPECT_TRUE(testModel.isPaused());
             } else {
-                checkKilled();
+                expectedModel.setKilled(true);
+                EXPECT_TRUE(testModel.isKilled());
             }
+            testSnakeModelEquality(expectedModel);
         }
     }
 
