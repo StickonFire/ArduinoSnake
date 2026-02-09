@@ -8,6 +8,12 @@
 #include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
 
+enum ModelState{
+    Running,
+    Killed,
+    Restart
+};
+
 /**
  * This conversion class holds a simple conversion function to create an arduinoLEDMatrix readable array out of the expected output of snakeModel.
  */
@@ -38,7 +44,7 @@ class ArduinoSnakeController{
 
     public:
         ArduinoSnakeController(ControlsParser inputParser,ConstrainedVectorToArray outputParser, SnakeModel model);
-        void moveStep(std::array<bool,3> &inputs, uint8_t outputLocation[ledRows][ledCols]);
+        ModelState moveStep(std::array<bool,3> &inputs, uint8_t outputLocation[ledRows][ledCols]);
 };
 
 #endif

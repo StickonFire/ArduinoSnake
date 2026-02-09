@@ -30,6 +30,11 @@ TEST(ControllerTests,ControlsToSoftwareConverterTest){
 class ConstrainedVectorToArrayHelperFunctions {
     public:
         static void setUpExpected(int startRow, int startCol, ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> init, uint8_t toInit[ledRows][ledCols]){
+            for(int i = 0; i < ledRows;i++){
+                for(int j = 0; j < ledCols; j++){
+                    toInit[i][j] = 1;
+                }
+            }
             for(int i = 0; i < init.size(); i++){
                 for(int j = 0; j < init[0].size(); j++){
                     toInit[i+startRow][j+startCol] = init[i][j];
@@ -233,4 +238,64 @@ TEST_F(ConstrainedVectorToArrayTest,InsideCheck){
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);
     checkEquality("Test with unflippable matrix failed.");
+}
+
+TEST(ControllerTest,MoveNoKillTest){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map{
+        {SnakeTile,Empty},
+        {SnakeTile,SnakeTile}
+    };
+    Coordinate startHeadPosition(1,1);
+    Coordinate startTailPosition(0,0);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Left,Down,Right};
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(1,0);
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Down,Right,Up},1);
+    Snake startingSnake(startHeadPosition,startTailPosition,startNodeDirection);
+    Snake endingSnake(endHeadPosition,endTailPosition,endNodeDirection);
+
+    SnakeModel innerModel(map,startingSnake,false,false);
+    ArduinoSnakeController test(ControlsParser(),ConstrainedVectorToArray(), innerModel);
+
+    uint8_t result[ledRows][ledCols];
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> expectedVector{
+        {0,1},
+        {1,1}
+    };
+    uint8_t expected[ledRows][ledCols];
+    ConstrainedVectorToArrayHelperFunctions::setUpExpected(3,5,expectedVector,expected);
+
+    std::array<bool,3> inputs = {true,false,false};
+    EXPECT_EQ(test.moveStep(inputs,result),Running);
+    ConstrainedVectorToArrayHelperFunctions::checkOutputEquality(expected,result,"MoveNoKill");
+}
+
+TEST(ControllerTest,MoveKillTest){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map{
+        {SnakeTile,SnakeTile,SnakeTile},
+        {SnakeTile,SnakeTile,Empty}
+    };
+    Coordinate startHeadPosition(1,1);
+    Coordinate startTailPosition(0,2);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up,Left,Left,Down,Right};
+    Coordinate endHeadPosition(1,1);
+    Coordinate endTailPosition(0,2);
+    ConstrainedVector<Direction,ledNums> endNodeDirection{Up,Left,Left,Down,Right};
+    Snake startingSnake(startHeadPosition,startTailPosition,startNodeDirection);
+    Snake endingSnake(endHeadPosition,endTailPosition,endNodeDirection);
+
+    SnakeModel innerModel(map,startingSnake,false,false);
+    ArduinoSnakeController test(ControlsParser(),ConstrainedVectorToArray(), innerModel);
+
+    uint8_t result[ledRows][ledCols];
+    ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> expectedVector{
+        {1,1,1},
+        {1,1,0}
+    };
+    uint8_t expected[ledRows][ledCols];
+    ConstrainedVectorToArrayHelperFunctions::setUpExpected(3,4,expectedVector,expected);
+
+    std::array<bool,3> inputs = {true,false,false};
+    EXPECT_EQ(test.moveStep(inputs,result),Killed);
+    ConstrainedVectorToArrayHelperFunctions::checkOutputEquality(expected,result,"MoveNoKill");
 }

@@ -35,8 +35,12 @@ Command ControlsParser::parseButtons(std::array<bool,3> &inputs){
 ArduinoSnakeController::ArduinoSnakeController(ControlsParser inputParser,ConstrainedVectorToArray outputParser, SnakeModel model):
     inputParser(inputParser), outputParser(outputParser), model(model) { }
 
-void ArduinoSnakeController::moveStep(std::array<bool,3> &inputs,uint8_t outputLocation[ledRows][ledCols]){
+ModelState ArduinoSnakeController::moveStep(std::array<bool,3> &inputs,uint8_t outputLocation[ledRows][ledCols]){
     Command cmd = inputParser.parseButtons(inputs);
     model.advanceState(cmd);
     outputParser.convertConstrainedVector(model.getMap(),outputLocation);
+    if(model.isKilled())
+        return Killed;
+    else
+        return Running;
 }
