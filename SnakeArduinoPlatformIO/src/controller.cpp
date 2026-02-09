@@ -44,3 +44,7 @@ ModelState ArduinoSnakeController::moveStep(std::array<bool,3> &inputs,uint8_t o
     else
         return Running;
 }
+
+void ArduinoSnakeController::setModel(SnakeModel model){
+    this->model = model;
+}

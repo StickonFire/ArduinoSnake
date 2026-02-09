@@ -45,6 +45,7 @@ class ArduinoSnakeController{
     public:
         ArduinoSnakeController(ControlsParser inputParser,ConstrainedVectorToArray outputParser, SnakeModel model);
         ModelState moveStep(std::array<bool,3> &inputs, uint8_t outputLocation[ledRows][ledCols]);
+        void setModel(SnakeModel model);
 };
 
 #endif
