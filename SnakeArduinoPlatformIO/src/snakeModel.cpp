@@ -137,8 +137,8 @@ void SnakeModel::advanceState(Command userInput){
 		Direction nextDirection = changeDirection(player.nodeDirection[player.nodeDirection.size()-1],userInput);
 		Coordinate nextPosition(player.headPosition,nextDirection);
 
-		if(nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0
-			|| map[nextPosition.x][nextPosition.y] == SnakeTile && !(nextPosition == player.tailPosition)){
+		if((nextPosition.x >= map.size() || nextPosition.x < 0 || nextPosition.y >= map[0].size() || nextPosition.y < 0)
+			|| (map[nextPosition.x][nextPosition.y] == SnakeTile && !(nextPosition == player.tailPosition))){
 			killed = true;
 			return;
 		}
