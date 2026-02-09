@@ -27,6 +27,33 @@ TEST(ControllerTests,ControlsToSoftwareConverterTest){
     }
 }
 
+class ConstrainedVectorToArrayHelperFunctions {
+    public:
+        static void setUpExpected(int startRow, int startCol, ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> init, uint8_t toInit[ledRows][ledCols]){
+            for(int i = 0; i < init.size(); i++){
+                for(int j = 0; j < init[0].size(); j++){
+                    toInit[i+startRow][j+startCol] = init[i][j];
+                }
+            }
+        }
+
+        static void checkOutputEquality(uint8_t expected[ledRows][ledCols], uint8_t result[ledRows][ledCols], std::string message){
+            bool equal = true;
+            std::string expectedString = "TOP\n";
+            std::string resultString = "TOP\n";
+            for(int i = 0; i < ledRows; i++){
+                for(int j = 0; j < ledCols; j++){
+                    expectedString += std::to_string(int(expected[i][j])) + ",";
+                    resultString += std::to_string(int(result[i][j])) + ",";
+                    equal = (result[i][j] == expected[i][j]) && equal;
+                }
+                expectedString += "\n";
+                resultString += "\n";
+            }
+            EXPECT_TRUE(equal) << message << "Expected: [\n" << expectedString << "]\nRECEIVED: [\n" << resultString << "]";
+        }
+};
+
 class ConstrainedVectorToArrayTest : public testing::Test {
     protected:
         ConstrainedVectorToArray test;
@@ -44,27 +71,11 @@ class ConstrainedVectorToArrayTest : public testing::Test {
         }
 
         void setUpExpected(int startRow, int startCol, ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> init){
-            for(int i = 0; i < init.size(); i++){
-                for(int j = 0; j < init[0].size(); j++){
-                    expected[i+startRow][j+startCol] = init[i][j];
-                }
-            }
+            ConstrainedVectorToArrayHelperFunctions::setUpExpected(startRow,startCol,init,expected);
         }
 
         void checkEquality(std::string message){
-            bool equal = true;
-            std::string expectedString = "TOP\n";
-            std::string resultString = "TOP\n";
-            for(int i = 0; i < ledRows; i++){
-                for(int j = 0; j < ledCols; j++){
-                    expectedString += std::to_string(int(expected[i][j])) + ",";
-                    resultString += std::to_string(int(result[i][j])) + ",";
-                    equal = (result[i][j] == expected[i][j]) && equal;
-                }
-                expectedString += "\n";
-                resultString += "\n";
-            }
-            EXPECT_TRUE(equal) << message << "Expected: [\n" << expectedString << "]\nRECEIVED: [\n" << resultString << "]";
+            ConstrainedVectorToArrayHelperFunctions::checkOutputEquality(expected,result,message);
         }
 };
 
