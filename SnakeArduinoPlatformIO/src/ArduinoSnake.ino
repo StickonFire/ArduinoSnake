@@ -13,11 +13,21 @@
 ArduinoLEDMatrix matrix;
 ModulinoButtons buttons;
 
-ArduinoSnakeController controller(ControlsParser(),ConstrainedVectorToArray(),
-    SnakeModel(ledRows,ledCols,Coordinate(ledRows/2,ledCols/2),Right,true));
 uint8_t frame[ledRows][ledCols];
 int delayTime = 100;
 std::array<bool,3> buttonStates;
+
+SnakeModel model;
+ArduinoSnakeController controller(ControlsParser(),ConstrainedVectorToArray(),model);
+
+SnakeModel setUpModel(){
+    Snake snake(Coordinate(3,5),Coordinate(3,2),ConstrainedVector<Direction,ledNums>{Right,Right,Right,Right}); 
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,Empty));
+    for(int i = 2; i <= 5; i++){
+        map[3][i] = SnakeTile;
+    }
+    return SnakeModel(map,snake,false,false);
+}
 
 void setup(){
     Serial.begin(9600);
@@ -25,7 +35,8 @@ void setup(){
     Modulino.begin(Wire1);
     buttons.begin();
     matrix.begin();
-
+    model = setUpModel();
+    controller.setModel(model);
     buttons.setLeds(false, false, false);
 }
 
