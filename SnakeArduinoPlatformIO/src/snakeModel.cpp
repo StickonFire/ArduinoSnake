@@ -85,6 +85,8 @@ bool Snake::moveTail(){
 	return true;
 }
 
+SnakeModel::SnakeModel(): player(Right,Coordinate(ledRows/2,ledCols/2)), map(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,Empty)), paused(false), killed(false) {}
+
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed): 
   map(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>(mapWidth,ConstrainedVector<MapTileState,ledCols>(mapHeight,Empty))), player(playerStartDirection, startPosition), paused(paused), killed(killed) {
     this->map[startPosition.x][startPosition.y] = SnakeTile;
