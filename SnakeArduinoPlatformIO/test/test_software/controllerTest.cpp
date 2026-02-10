@@ -150,7 +150,7 @@ TEST_F(ConstrainedVectorToArrayTest,EvenHeight){
     input = ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>{
         {Empty},
         {Empty},
-        {SnakeTile},
+        {Apple},
         {SnakeTile},
         {Empty},
         {Empty}
@@ -175,7 +175,7 @@ TEST_F(ConstrainedVectorToArrayTest,FullHeight){
         {Empty},
         {Empty},
         {Empty},
-        {SnakeTile},
+        {Apple},
         {SnakeTile},
         {Empty},
         {Empty},
@@ -200,24 +200,24 @@ TEST_F(ConstrainedVectorToArrayTest,FullScreen){
     int windowRow = 0;
     int windowCol = 0;
     input = ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>{
-        {Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty},
+        {Apple,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Apple},
         {Empty,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,Empty},
         {Empty,SnakeTile,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,SnakeTile,Empty},
         {Empty,SnakeTile,Empty,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,Empty,SnakeTile,Empty},
         {Empty,SnakeTile,Empty,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,Empty,SnakeTile,Empty},
         {Empty,SnakeTile,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,SnakeTile,Empty},
         {Empty,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,SnakeTile,Empty},
-        {Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty}
+        {Apple,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Empty,Apple}
     };
     ConstrainedVector<ConstrainedVector<uint8_t,ledCols>,ledRows> initExpected{
-        {0,0,0,0,0,0,0,0,0,0,0,0},
+        {1,0,0,0,0,0,0,0,0,0,0,1},
         {0,1,1,1,1,1,1,1,1,1,1,0},
         {0,1,0,0,0,0,0,0,0,0,1,0},
         {0,1,0,1,1,1,1,1,1,0,1,0},
         {0,1,0,1,1,1,1,1,1,0,1,0},
         {0,1,0,0,0,0,0,0,0,0,1,0},
         {0,1,1,1,1,1,1,1,1,1,1,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0}
+        {1,0,0,0,0,0,0,0,0,0,0,1}
     };
     setUpExpected(windowRow,windowCol,initExpected);
     test.convertConstrainedVector(input,result);

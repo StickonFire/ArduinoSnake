@@ -9,7 +9,7 @@ enum Command{
 std::string to_string(Command convert);
 
 enum MapTileState{
-    Empty, SnakeTile
+    Empty, SnakeTile, Apple
 };
 
 #endif
