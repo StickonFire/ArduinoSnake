@@ -434,3 +434,42 @@ TEST_F(SnakeModelMultinodeAdvanceStateTest,SnakeRunsIntoItself){
     DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
     multiNodeTest(start,map,end,map,LeftTurn,"Snake Crashes Into Itself Failed",true);
 }
+
+class SnakeModelAppleTest : public SnakeModelMultinodeAdvanceStateTest {
+
+};
+
+TEST_F(SnakeModelAppleTest,SingularSnakeEatsApple){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap{
+        {SnakeTile,Apple}
+    };
+    Coordinate startHeadPosition(0,0);
+    Coordinate startTailPosition(0,0);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Right};
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap{
+        {SnakeTile,SnakeTile}
+    };
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(0,0);
+    ConstrainedVector<Direction,ledNums> endNodeDirection{Right,Right};
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    multiNodeTest(start,startingMap,end,endingMap,Straight,"Snake Eating Apple Failed",false);
+}
+
+TEST_F(SnakeModelAppleTest,LastAppleEaten){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,SnakeTile));
+    startingMap[0][0] = Apple;
+    Coordinate startHeadPosition(0,1);
+    Coordinate startTailPosition(ledRows-1,ledCols-1);
+    ConstrainedVector<Direction,ledNums> startNodeDirection(ledNums-1,Left);
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,SnakeTile));
+    Coordinate endHeadPosition(0,0);
+    Coordinate endTailPosition(startTailPosition);
+    ConstrainedVector<Direction,ledNums> endNodeDirection(ledNums,Left);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    multiNodeTest(start,startingMap,end,endingMap,Straight,"Snake Reaching Max Size Failed.",false);
+}

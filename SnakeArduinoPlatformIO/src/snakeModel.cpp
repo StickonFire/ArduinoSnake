@@ -142,12 +142,14 @@ void SnakeModel::advanceState(Command userInput){
 			killed = true;
 			return;
 		}
-		
-		map[player.tailPosition.x][player.tailPosition.y] = Empty;
-		map[nextPosition.x][nextPosition.y] = SnakeTile;
-		
+
+
 		player.moveHead(nextDirection);
-		player.moveTail();
+		if(map[nextPosition.x][nextPosition.y] != Apple){
+			map[player.tailPosition.x][player.tailPosition.y] = Empty;
+			player.moveTail();
+		}
+		map[nextPosition.x][nextPosition.y] = SnakeTile;
 	}
 }
 
