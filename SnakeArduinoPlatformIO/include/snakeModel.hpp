@@ -4,6 +4,7 @@
 #include "hardwareValues.hpp"
 #include "modelControllerCommUnits.hpp"
 #include "constrainedVector.hpp"
+#include "randomNumberGenerator.hpp"
 
 enum Direction{
     Up, Right, Down, Left
@@ -48,12 +49,14 @@ class SnakeModel {
     bool paused;
     bool killed;
     ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map;
+    int applesCount;
+    randomNumberGenerator* rng;
 
     public:
     SnakeModel();
     SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused = false, bool killed = false);
     SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed = false);
-    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused, bool killed);
+    SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused, bool killed, int applesCount, randomNumberGenerator* rng);
 
     bool operator==(const SnakeModel& other) const;
 

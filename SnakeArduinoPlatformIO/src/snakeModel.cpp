@@ -85,24 +85,26 @@ bool Snake::moveTail(){
 	return true;
 }
 
-SnakeModel::SnakeModel(): player(Right,Coordinate(ledRows/2,ledCols/2)), map(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,Empty)), paused(false), killed(false) {}
+SnakeModel::SnakeModel(): player(Right,Coordinate(ledRows/2,ledCols/2)), map(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,Empty)), paused(false), killed(false), applesCount(0), rng(nullptr) {}
 
 SnakeModel::SnakeModel(int mapWidth, int mapHeight, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed): 
-  map(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>(mapWidth,ConstrainedVector<MapTileState,ledCols>(mapHeight,Empty))), player(playerStartDirection, startPosition), paused(paused), killed(killed) {
+  map(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows>(mapWidth,ConstrainedVector<MapTileState,ledCols>(mapHeight,Empty))), player(playerStartDirection, startPosition), paused(paused), killed(killed), applesCount(0), rng(nullptr) {
     this->map[startPosition.x][startPosition.y] = SnakeTile;
 }
 
 SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Coordinate startPosition, Direction playerStartDirection, bool paused, bool killed):
-  map(map), player(playerStartDirection,startPosition), paused(paused), killed(killed) { 
+  map(map), player(playerStartDirection,startPosition), paused(paused), killed(killed), applesCount(0), rng(nullptr) { 
 }
 
-SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused, bool killed): map(map), player(player), paused(paused), killed(killed) { }
+SnakeModel::SnakeModel(ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map, Snake player, bool paused, bool killed, int applesCount, randomNumberGenerator* rng): 
+  map(map), player(player), paused(paused), killed(killed), applesCount(applesCount), rng(rng) { }
 
 bool SnakeModel::operator==(const SnakeModel& other) const {
     return this->player == other.player
         && this->map == other.map
         && this->paused == other.paused
-		&& this->killed == other.killed;
+		&& this->killed == other.killed
+		&& this->applesCount == other.applesCount;
 }
 
 Direction changeDirection(Direction initial, Command input){

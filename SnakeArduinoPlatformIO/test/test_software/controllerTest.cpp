@@ -254,7 +254,7 @@ TEST(ControllerTest,MoveNoKillTest){
     Snake startingSnake(startHeadPosition,startTailPosition,startNodeDirection);
     Snake endingSnake(endHeadPosition,endTailPosition,endNodeDirection);
 
-    SnakeModel innerModel(map,startingSnake,false,false);
+    SnakeModel innerModel(map,startingSnake,false,false,0,nullptr);
     ArduinoSnakeController test(ControlsParser(),ConstrainedVectorToArray(), innerModel);
 
     uint8_t result[ledRows][ledCols];
@@ -284,7 +284,7 @@ TEST(ControllerTest,MoveKillTest){
     Snake startingSnake(startHeadPosition,startTailPosition,startNodeDirection);
     Snake endingSnake(endHeadPosition,endTailPosition,endNodeDirection);
 
-    SnakeModel innerModel(map,startingSnake,false,false);
+    SnakeModel innerModel(map,startingSnake,false,false,0,nullptr);
     ArduinoSnakeController test(ControlsParser(),ConstrainedVectorToArray(), innerModel);
 
     uint8_t result[ledRows][ledCols];
