@@ -1,3 +1,5 @@
+#ifndef RNG
+#define RNG
 #include <random>
 
 class randomNumberGenerator {
@@ -10,3 +12,4 @@ class mt19937RandomNumberGenerator : randomNumberGenerator {
     mt19937RandomNumberGenerator(std::mt19937 rng);
     int selectNumber(int maximumNumber);
 };
+#endif
