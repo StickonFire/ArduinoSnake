@@ -4,6 +4,7 @@
 
 #include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
+#include "randomNumberGenerator.hpp"
 
 using testing::Test;
 
@@ -240,7 +241,7 @@ class SnakeModelMultinodeAdvanceStateTest : public SnakeModelAdvanceStateTest {
         ConstrainedVector<Direction,ledNums> directions;
     };
 
-    void multiNodeTest(DoubleNodeMapDescription start, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap, 
+    void multiNodeTest(DoubleNodeMapDescription start, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap,
             DoubleNodeMapDescription end, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap, Command command, std::string message, bool killed=false){
 
         Snake startingSnake(start.head,start.tail,start.directions);
@@ -436,7 +437,19 @@ TEST_F(SnakeModelMultinodeAdvanceStateTest,SnakeRunsIntoItself){
 }
 
 class SnakeModelAppleTest : public SnakeModelMultinodeAdvanceStateTest {
+    protected:
+    void multiNodeTest(DoubleNodeMapDescription start, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap, int startingApples,
+            DoubleNodeMapDescription end, ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap, int endingApples, Command command, std::string message, bool killed=false, randomNumberGenerator* rng=nullptr){
 
+        Snake startingSnake(start.head,start.tail,start.directions);
+        Snake endingSnake(end.head,end.tail,end.directions);
+
+        testModel = SnakeModel(startingMap,startingSnake,false,false,startingApples,rng);
+        SnakeModel expectedModel(endingMap,endingSnake,false,killed,endingApples,rng);
+
+        testModel.advanceState(command);
+        testSnakeModelEquality(expectedModel,message);
+    }
 };
 
 TEST_F(SnakeModelAppleTest,SingularSnakeEatsApple){
@@ -455,7 +468,7 @@ TEST_F(SnakeModelAppleTest,SingularSnakeEatsApple){
 
     DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
     DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
-    multiNodeTest(start,startingMap,end,endingMap,Straight,"Snake Eating Apple Failed",false);
+    multiNodeTest(start,startingMap,1,end,endingMap,0,Straight,"Snake Eating Apple Failed",false,nullptr);
 }
 
 TEST_F(SnakeModelAppleTest,LastAppleEaten){
@@ -471,5 +484,5 @@ TEST_F(SnakeModelAppleTest,LastAppleEaten){
 
     DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
     DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
-    multiNodeTest(start,startingMap,end,endingMap,Straight,"Snake Reaching Max Size Failed.",false);
+    multiNodeTest(start,startingMap,1,end,endingMap,0,Straight,"Snake Reaching Max Size Failed.",false,nullptr);
 }

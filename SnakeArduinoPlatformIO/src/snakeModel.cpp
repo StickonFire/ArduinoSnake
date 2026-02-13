@@ -150,6 +150,8 @@ void SnakeModel::advanceState(Command userInput){
 		if(map[nextPosition.x][nextPosition.y] != Apple){
 			map[player.tailPosition.x][player.tailPosition.y] = Empty;
 			player.moveTail();
+		} else {
+			applesCount--;
 		}
 		map[nextPosition.x][nextPosition.y] = SnakeTile;
 	}
