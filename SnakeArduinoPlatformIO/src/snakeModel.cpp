@@ -184,3 +184,7 @@ void SnakeModel::setKilled(bool killed){
 bool SnakeModel::isKilled() {
 	return this->killed;
 }
+
+int SnakeModel::getApplesCount(){
+	return this->applesCount;
+}

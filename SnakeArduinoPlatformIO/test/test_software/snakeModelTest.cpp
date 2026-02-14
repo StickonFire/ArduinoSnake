@@ -51,6 +51,9 @@ std::string snakeModelToString(SnakeModel& toDescribe){
             break;
         case Left:
             snakeDesign = '>';
+            break;
+        default:
+            snakeDesign = 'N';
     }
     mapRepresentation[headPosition.x][headPosition.y] = snakeDesign;
     result += "Map: {\n";
@@ -84,6 +87,7 @@ std::string snakeModelToString(SnakeModel& toDescribe){
         result += "True\n";
     else 
         result += "False\n";
+    result += "Apples Count: " + std::to_string(toDescribe.getApplesCount()) + "\n";
     return result + "}";
 }
 

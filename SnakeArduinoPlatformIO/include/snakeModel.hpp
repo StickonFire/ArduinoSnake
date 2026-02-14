@@ -72,6 +72,7 @@ class SnakeModel {
     bool isPaused();
     void setKilled(bool killed);
     bool isKilled();
+    int getApplesCount();
 };
 
 #endif
