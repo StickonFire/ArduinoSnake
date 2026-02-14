@@ -1,12 +1,16 @@
 #include <array>
 #include <string>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
+#include "mockClasses.hpp"
 #include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
 #include "randomNumberGenerator.hpp"
 
 using testing::Test;
+using testing::_;
+using testing::Return;
 
 const std::array<Command,3> commandList{LeftTurn,RightTurn,Pause};
 const std::array<Direction,4> directionList{Up,Right,Down,Left};
@@ -23,6 +27,9 @@ std::string snakeModelToString(SnakeModel& toDescribe){
                     break;
                 case SnakeTile:
                     mapRepresentation[width][height] = 'S';
+                    break;
+                case Apple:
+                    mapRepresentation[width][height] = 'A';
                     break;
                 default:
                     mapRepresentation[width][height] = 'N';
@@ -485,4 +492,30 @@ TEST_F(SnakeModelAppleTest,LastAppleEaten){
     DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
     DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
     multiNodeTest(start,startingMap,1,end,endingMap,0,Straight,"Snake Reaching Max Size Failed.",false,nullptr);
+}
+
+TEST_F(SnakeModelAppleTest,AppleReplaceNoIssues){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap{
+        {SnakeTile,Apple},
+        {Empty,Empty}
+    };
+    Coordinate startHeadPosition(0,0);
+    Coordinate startTailPosition(startHeadPosition);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up};
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap{
+        {SnakeTile,SnakeTile},
+        {Apple,Empty}
+    };
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(0,0);
+    ConstrainedVector<Direction,ledNums> endNodeDirection{Up,Right};
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    mockRandomNumberGenerator rng;
+    EXPECT_CALL(rng,selectNumber(_))
+        .Times(2)
+        .WillOnce(Return(1))
+        .WillOnce(Return(0));
+    multiNodeTest(start,startingMap,1,end,endingMap,1,RightTurn,"Apple Replacement failed.",false,&rng);
 }
