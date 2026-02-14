@@ -158,6 +158,16 @@ void SnakeModel::advanceState(Command userInput){
 			applesCount--;
 		}
 		map[nextPosition.x][nextPosition.y] = SnakeTile;
+
+		if(rng != nullptr && applesCount == 0){
+			Coordinate nextApple = player.headPosition;
+			while(map[nextApple.x][nextApple.y] != Empty){
+				nextApple.x = rng->selectNumber(map.size());
+				nextApple.y = rng->selectNumber(map[0].size());
+			}
+			map[nextApple.x][nextApple.y] = Apple;
+			applesCount++;
+		}
 	}
 }
 

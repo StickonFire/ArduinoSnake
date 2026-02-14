@@ -523,3 +523,55 @@ TEST_F(SnakeModelAppleTest,AppleReplaceNoIssues){
         .WillOnce(Return(0));
     multiNodeTest(start,startingMap,1,end,endingMap,1,RightTurn,"Apple Replacement failed.",false,&rng);
 }
+
+TEST_F(SnakeModelAppleTest,SnakeMissesApple){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap{
+        {SnakeTile,Empty},
+        {Empty,Apple}
+    };
+    Coordinate startHeadPosition(0,0);
+    Coordinate startTailPosition(startHeadPosition);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up};
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap{
+        {Empty,SnakeTile},
+        {Empty,Apple}
+    };
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(0,1);
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Right},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    mockRandomNumberGenerator rng;
+    EXPECT_CALL(rng,selectNumber(_))
+        .Times(0);
+    multiNodeTest(start,startingMap,1,end,endingMap,1,RightTurn,"Apple not touched with rng set up.",false,&rng);
+}
+
+TEST_F(SnakeModelAppleTest,ApplePlacementCollisionWithSnake){
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> startingMap{
+        {SnakeTile,Empty},
+        {Empty,Empty}
+    };
+    Coordinate startHeadPosition(0,0);
+    Coordinate startTailPosition(startHeadPosition);
+    ConstrainedVector<Direction,ledNums> startNodeDirection{Up};
+    ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> endingMap{
+        {Empty,SnakeTile},
+        {Apple,Empty}
+    };
+    Coordinate endHeadPosition(0,1);
+    Coordinate endTailPosition(0,1);
+    ConstrainedVector<Direction,ledNums> endNodeDirection({Right},1);
+
+    DoubleNodeMapDescription start{startHeadPosition,startTailPosition,startNodeDirection};
+    DoubleNodeMapDescription end{endHeadPosition,endTailPosition,endNodeDirection};
+    mockRandomNumberGenerator rng;
+    EXPECT_CALL(rng,selectNumber(_))
+        .Times(4)
+        .WillOnce(Return(0))
+        .WillOnce(Return(1))
+        .WillOnce(Return(1))
+        .WillOnce(Return(0));
+    multiNodeTest(start,startingMap,0,end,endingMap,1,RightTurn,"Apple Replacement with Collision Failed.",false,&rng);
+}
