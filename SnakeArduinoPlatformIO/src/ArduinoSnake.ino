@@ -40,7 +40,7 @@ SnakeModel setUpModel(randomNumberGenerator *rng){
     for(int i = 2; i <= 5; i++){
         map[3][i] = SnakeTile;
     }
-    return SnakeModel(map,snake,false,false);
+    return SnakeModel(map,snake,false,false,0,rng);
 }
 
 void setup(){
@@ -49,7 +49,7 @@ void setup(){
     Modulino.begin(Wire1);
     buttons.begin();
     matrix.begin();
-    model = setUpModel();
+    model = setUpModel(&rng);
     controller.setModel(model);
     buttons.setLeds(false, false, false);
 }
