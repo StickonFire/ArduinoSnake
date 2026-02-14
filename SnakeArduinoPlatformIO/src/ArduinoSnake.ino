@@ -9,6 +9,7 @@
 #include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
 #include "controller.hpp"
+#include "randomNumberGenerator.hpp"
 
 ArduinoLEDMatrix matrix;
 ModulinoButtons buttons;
@@ -20,7 +21,20 @@ std::array<bool,3> buttonStates;
 SnakeModel model;
 ArduinoSnakeController controller(ControlsParser(),ConstrainedVectorToArray(),model);
 
-SnakeModel setUpModel(){
+class arduinoRandom: public randomNumberGenerator {
+    public:
+    arduinoRandom(){
+        randomSeed(analogRead(0));
+    }
+
+    int selectNumber(int maxNumber){
+        return int(random(maxNumber));
+    }
+};
+
+arduinoRandom rng;
+
+SnakeModel setUpModel(randomNumberGenerator *rng){
     Snake snake(Coordinate(3,5),Coordinate(3,2),ConstrainedVector<Direction,ledNums>{Right,Right,Right,Right}); 
     ConstrainedVector<ConstrainedVector<MapTileState,ledCols>,ledRows> map(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,Empty));
     for(int i = 2; i <= 5; i++){

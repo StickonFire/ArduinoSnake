@@ -3,10 +3,12 @@
 #include <map>
 #include <cstdint>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include "modelControllerCommUnits.hpp"
 #include "snakeModel.hpp"
 #include "controller.hpp"
+#include "mockClasses.hpp"
 
 using testing::Test;
 
