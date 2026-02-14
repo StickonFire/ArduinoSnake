@@ -59,10 +59,10 @@ bool Coordinate::operator==(const Coordinate& other) const{
 		&& this->y == other.y;
 }
 
-Snake::Snake(Direction direction,Coordinate headPosition): currentDirection(direction), headPosition(headPosition), tailPosition(headPosition), nodeDirection{direction} { }
+Snake::Snake(Direction direction,Coordinate headPosition): headPosition(headPosition), tailPosition(headPosition), nodeDirection{direction} { }
 
 Snake::Snake(Coordinate headPosition, Coordinate tailPosition, ConstrainedVector<Direction,ledNums> nodeDirection):
-	currentDirection(currentDirection), headPosition(headPosition), tailPosition(tailPosition), nodeDirection{nodeDirection} { }
+	headPosition(headPosition), tailPosition(tailPosition), nodeDirection{nodeDirection} { }
 
 bool Snake::operator==(const Snake& other) const {
     return this->headPosition == other.headPosition
@@ -83,6 +83,10 @@ bool Snake::moveTail(){
 	this->nodeDirection.pop_front();
 	this->tailPosition = Coordinate(this->tailPosition,nodeDirection[0]);
 	return true;
+}
+
+Direction Snake::headDirection(){
+	return this->nodeDirection[nodeDirection.size()-1];
 }
 
 SnakeModel::SnakeModel(): player(Right,Coordinate(ledRows/2,ledCols/2)), map(ledRows,ConstrainedVector<MapTileState,ledCols>(ledCols,Empty)), paused(false), killed(false), applesCount(0), rng(nullptr) {}

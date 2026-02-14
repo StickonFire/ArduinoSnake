@@ -24,7 +24,6 @@ struct Coordinate{
 };
 
 struct Snake {
-    Direction currentDirection;
     Coordinate headPosition;
     Coordinate tailPosition;
     ConstrainedVector<Direction,ledNums> nodeDirection;

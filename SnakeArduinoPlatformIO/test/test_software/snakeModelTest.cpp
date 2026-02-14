@@ -39,7 +39,7 @@ std::string snakeModelToString(SnakeModel& toDescribe){
     Snake player(toDescribe.getPlayer());
     Coordinate headPosition(player.headPosition);
     char snakeDesign;
-    switch(player.currentDirection){
+    switch(player.headDirection()){
         case Up:
             snakeDesign = 'v';
             break;

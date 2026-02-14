@@ -15,7 +15,6 @@ TEST(SnakeConstuctorTest,SnakeHeadOnlyConstructor){
 
     Snake test(expectedDirection,expectedHeadPosition);
 
-    EXPECT_EQ(test.currentDirection,expectedDirection);
     EXPECT_EQ(test.headPosition,expectedHeadPosition);
     EXPECT_EQ(test.tailPosition,expectedTailPosition);
     EXPECT_EQ(test.nodeDirection,expectedDirections);
